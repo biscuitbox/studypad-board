@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#171A2E">
+<title>설치·업로드 슬라이드 · 스터디패드</title>
+<style>
+:root{
+  --ink:#171A2E; --ink-2:#232846; --paper:#F3F3F8; --white:#fff;
+  --accent:#C8430E; --accent-dim:#A8370B; --accent-soft:#FFF0E8;
+  --spark:#FFD400; --line:#DCDCE8; --muted:#62648A; --dim:#A8ABD0;
+}
+*{box-sizing:border-box}
+/* 한글이 단어 중간에서 끊기지 않게 — '메뉴에서'의 '서'만 내려가는 일을 막는다 */
+h2,.sub,.note,.big,.lead,figcaption,ul.pts li,.step b,.step span,.tlrow .d,
+.cover h1,.cover p,.shotbox .body{word-break:keep-all;overflow-wrap:break-word}
+html,body{height:100%}
+body{margin:0;background:var(--paper);color:var(--ink);overflow:hidden;
+  font-family:-apple-system,"Malgun Gothic","Apple SD Gothic Neo",sans-serif}
+.deck{height:100vh;position:relative}
+.stage{position:absolute;inset:0;overflow:hidden}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;justify-content:center;
+  padding:11vh 5vw 8vh;overflow:auto}
+.slide.on{display:flex}
+
+/* 차시 표지 — 슬라이드 모서리에 고정, 본문 흐름 밖 */
+.mark{position:absolute;left:5vw;top:4.4vh;display:flex;align-items:center;
+  gap:clamp(9px,.9vw,15px);font-size:clamp(13px,1.35vw,21px);color:var(--muted)}
+.mark .n{background:var(--ink);color:var(--paper);font-weight:700;
+  width:clamp(26px,2.5vw,40px);height:clamp(26px,2.5vw,40px);border-radius:4px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:clamp(14px,1.45vw,23px);font-variant-numeric:tabular-nums}
+
+h2{font-size:clamp(28px,4.4vw,72px);line-height:1.18;margin:0 0 clamp(16px,2.6vh,38px);
+  letter-spacing:-.035em;font-weight:700}
+.sub{font-size:clamp(17px,2.2vw,36px);line-height:1.55;color:var(--muted);margin:0}
+.sub b{color:var(--ink);font-weight:700}
+
+/* 목록 — 상자가 아니라 가로줄로 나뉜 행 */
+ul.pts{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+ul.pts li{border-bottom:1px solid var(--line);padding:clamp(13px,2.1vh,27px) 0
+  clamp(13px,2.1vh,27px) clamp(26px,2.6vw,46px);position:relative;
+  font-size:clamp(17px,2.3vw,41px);line-height:1.38}
+ul.pts li::before{content:"";position:absolute;left:0;top:calc(.62em);
+  width:clamp(9px,.85vw,15px);height:clamp(9px,.85vw,15px);background:var(--accent);
+  border-radius:2px}
+ul.pts li b{font-weight:700}
+ul.pts li:nth-last-child(n+5),ul.pts li:nth-last-child(n+5)~li{
+  padding-top:clamp(10px,1.5vh,20px);padding-bottom:clamp(10px,1.5vh,20px);
+  font-size:clamp(16px,2vw,34px)}
+ul.pts:has(li:nth-child(2):last-child) li,
+ul.pts:has(li:nth-child(3):last-child) li{
+  padding-top:clamp(20px,3.6vh,52px);padding-bottom:clamp(20px,3.6vh,52px);
+  font-size:clamp(19px,2.65vw,48px)}
+/* 목록(왼쪽) + 캡처(오른쪽) 2단 — 글만으로는 어느 탭인지 못 찾는 화면용 */
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,2.6vw,46px);align-items:start}
+.twocol .pts{margin-top:0}
+.twocol .shotbox{margin-top:0;height:100%}
+.twocol .shotbox img{max-height:44vh}
+.note{margin:clamp(16px,2.4vh,32px) 0 0;font-size:clamp(14px,1.75vw,29px);
+  color:var(--muted);line-height:1.5}
+.note b{color:var(--accent-dim);font-weight:700}
+
+/* 단계 카드 — 테두리 없이 위쪽 굵은 선 */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,215px),1fr));
+  gap:clamp(16px,2.1vw,36px)}
+.step{border-top:5px solid var(--accent);padding:clamp(14px,2vh,28px) 0 0}
+.step .ic{font-size:clamp(28px,3.3vw,54px);line-height:1.1}
+.step .ic.num{background:var(--ink);color:var(--paper);width:clamp(32px,2.8vw,46px);
+  height:clamp(32px,2.8vw,46px);border-radius:5px;display:flex;align-items:center;
+  justify-content:center;font-weight:700;font-size:clamp(17px,1.7vw,27px);
+  font-variant-numeric:tabular-nums}
+.step > b{display:block;font-size:clamp(18px,2.35vw,39px);margin:clamp(9px,1.3vh,18px) 0 5px;
+  letter-spacing:-.025em;line-height:1.25}
+.step span{color:var(--muted);font-size:clamp(15px,1.9vw,31px);line-height:1.42}
+
+/* 화면 캡처 자리 — 브라우저 창 모양 */
+.shotbox{margin-top:clamp(8px,1.4vh,18px);border:1px solid var(--line);border-radius:10px;
+  background:var(--white);overflow:hidden;display:flex;flex-direction:column;
+  flex:1 1 auto;max-height:62vh}
+.shotbox .chrome{background:var(--ink);color:var(--dim);display:flex;align-items:center;
+  gap:9px;padding:clamp(6px,.9vh,11px) clamp(11px,1.1vw,18px);
+  font-family:ui-monospace,Consolas,"D2Coding",monospace;font-size:clamp(11px,1.15vw,18px)}
+.shotbox .chrome span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.shotbox .chrome i{width:clamp(7px,.62vw,11px);height:clamp(7px,.62vw,11px);
+  border-radius:50%;background:#464C78;display:block}
+.shotbox .chrome i:first-child{background:var(--spark)}
+.shotbox .body{flex:1;display:flex;align-items:center;justify-content:center;text-align:center;
+  padding:clamp(16px,3vh,34px);min-height:38vh;color:var(--muted);
+  font-size:clamp(13px,1.5vw,23px);background:repeating-linear-gradient(135deg,
+    #fff 0 11px,#FAFAFD 11px 22px)}
+.shotbox img{max-width:100%;max-height:52vh;display:block;border-radius:4px}
+
+figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:clamp(8px,1.6vh,20px);width:100%}
+figure svg{width:100%;height:auto;max-height:58vh}
+figcaption{color:var(--muted);font-size:clamp(13px,1.55vw,25px);text-align:center;
+  max-width:46em;line-height:1.45}
+
+/* 표지 */
+.cover{background:var(--ink);color:var(--white);justify-content:flex-end;
+  padding-bottom:15vh}
+.cover .ses{display:flex;align-items:baseline;gap:clamp(10px,1vw,18px);margin:0 0 clamp(14px,2vh,26px)}
+.cover .ses .num{font-size:clamp(46px,8vw,132px);font-weight:700;line-height:.82;
+  color:var(--spark);letter-spacing:-.05em;font-variant-numeric:tabular-nums}
+.cover .ses .of{font-size:clamp(15px,1.7vw,26px);color:var(--dim)}
+.cover h1{font-size:clamp(30px,5.4vw,88px);line-height:1.14;margin:0 0 clamp(10px,1.6vh,22px);
+  letter-spacing:-.04em;font-weight:700}
+.cover p{font-size:clamp(17px,2.3vw,38px);color:var(--dim);margin:0;max-width:30em;line-height:1.4}
+.cover .course{position:absolute;left:5vw;top:4.4vh;font-size:clamp(12px,1.3vw,19px);
+  color:#6E72A8}
+.three{display:flex;gap:clamp(5px,.55vw,10px);margin:0 0 clamp(16px,2.6vh,34px)}
+.three span{width:clamp(34px,3.4vw,58px);height:clamp(7px,.85vh,13px);border-radius:2px;
+  background:#2E3356;display:block}
+.three span.done{background:#454B7C}
+.three span.now{background:var(--spark)}
+
+/* 타임라인 — 블록 길이를 막대 너비로 보여 준다 */
+.tl{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.tlrow{display:flex;align-items:center;gap:clamp(14px,1.6vw,30px);
+  border-bottom:1px solid var(--line);padding:clamp(12px,2.2vh,30px) 0}
+.tlrow .t{font-variant-numeric:tabular-nums;font-weight:700;color:var(--ink);
+  font-size:clamp(14px,1.75vw,30px);white-space:nowrap;
+  font-family:ui-monospace,Consolas,"D2Coding",monospace;letter-spacing:-.05em;
+  flex:0 0 auto;min-width:6.2em}
+.tlrow .d{font-size:clamp(16px,2.1vw,37px);flex:1 1 auto;min-width:0}
+.tlrow .track{flex:0 0 32%;height:clamp(9px,1.05vh,16px);background:#E2E2EE;
+  border-radius:3px;overflow:hidden}
+.tlrow .len{display:block;height:100%;background:var(--accent);border-radius:3px}
+.tlrow:last-child .len{background:var(--spark)}
+
+/* 한 문장 슬라이드 — 잉크 바탕 */
+.punch{background:var(--ink);color:var(--white)}
+.punch .mark{color:var(--dim)}
+.punch .mark .n{background:var(--spark);color:var(--ink)}
+.lead{font-size:clamp(16px,2vw,32px);font-weight:700;color:var(--accent);
+  margin:0 0 clamp(10px,1.5vh,20px);line-height:1.3;letter-spacing:-.02em}
+.punch .lead{color:var(--spark)}
+.big{font-size:clamp(33px,6.6vw,108px);font-weight:700;line-height:1.08;
+  margin:0 0 clamp(14px,2.2vh,30px);letter-spacing:-.045em}
+.punch .sub{color:var(--dim)}
+.punch .sub b{color:var(--white)}
+
+/* 하단 — 평소엔 진행선만, 마우스를 움직이면 조작부가 올라온다 */
+.rail{position:absolute;left:0;right:0;bottom:0;height:4px;background:#E2E2EE;z-index:5}
+.punch~.rail,.cover~.rail{background:#2E3356}
+.rail i{display:block;height:100%;width:0;background:var(--accent);transition:width .22s}
+.bar{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;gap:13px;
+  padding:9px 16px 12px;background:rgba(255,255,255,.96);border-top:1px solid var(--line);
+  z-index:6;transform:translateY(105%);transition:transform .2s ease;
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.deck.show .bar{transform:translateY(0)}
+.bar button{background:var(--accent);color:#fff;border:0;border-radius:7px;padding:8px 15px;
+  font-size:14.5px;cursor:pointer;font-family:inherit}
+.bar button:hover{background:var(--accent-dim)}
+.bar button:disabled{background:#B9BAD2;cursor:default}
+.bar .count{font-variant-numeric:tabular-nums;color:var(--muted);font-size:14.5px;
+  font-family:ui-monospace,Consolas,monospace}
+.bar .sp{flex:1}
+.bar a{color:var(--muted);text-decoration:none;font-size:14px;padding:5px 9px;border-radius:7px}
+.bar a:hover{background:var(--accent-soft);color:var(--accent-dim)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.punch :focus-visible,.cover :focus-visible{outline-color:var(--spark)}
+
+@media (max-width:600px){
+  .twocol{grid-template-columns:1fr}
+  .slide{padding:9vh 6vw 7vh}
+  .bar a{display:none}
+  .tlrow .len{display:none}
+  .tlrow .t{min-width:4.6em}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{
+  body{overflow:visible} .deck{height:auto;position:static} .stage{position:static}
+  .slide{display:flex!important;position:static;page-break-after:always;min-height:95vh;
+    border-bottom:1px solid #ccc}
+  .bar,.rail{display:none}
+  .cover,.punch{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+
+/* 보드 화면 — 실제 2.8인치 화면 비율(3:4)의 검은 테두리 */
+.boards{display:flex;justify-content:center;gap:clamp(14px,2.2vw,40px);flex-wrap:wrap;width:100%}
+.boards figure{width:auto;flex:0 1 auto}
+.bframe{background:#0B0D1A;border-radius:clamp(10px,1.2vw,18px);padding:clamp(7px,.8vw,13px);
+  box-shadow:0 10px 30px rgba(23,26,46,.22)}
+.bframe img{display:block;height:clamp(180px,44vh,520px);width:auto;border-radius:4px;
+  image-rendering:pixelated}
+.boards.four .bframe img{height:clamp(150px,36vh,430px)}
+.keys{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));
+  gap:clamp(10px,1.4vw,22px)}
+.key{display:flex;align-items:center;gap:clamp(10px,1.2vw,20px);border-bottom:1px solid var(--line);
+  padding:clamp(8px,1.4vh,18px) 0}
+.key kbd{font-family:ui-monospace,Consolas,monospace;background:var(--white);border:1px solid var(--line);
+  border-bottom-width:3px;border-radius:7px;padding:3px 10px;font-size:clamp(14px,1.6vw,26px);
+  white-space:nowrap;font-weight:700}
+.key span{font-size:clamp(15px,1.8vw,30px)}
+
+
+/* ── 스터디패드 슬라이드 추가 ── */
+.shot{margin:0;display:flex;flex-direction:column;align-items:center;gap:clamp(8px,1.4vh,18px);width:100%}
+.shot img{max-width:100%;max-height:56vh;display:block;border-radius:10px;
+  box-shadow:0 10px 30px rgba(23,26,46,.16);background:#fff}
+.slide.tall .shot img{max-height:64vh}
+.slide.snug .shot img{max-height:52vh}
+.twocol .shot img{max-height:50vh}
+.twocol.wide{grid-template-columns:.9fr 1.1fr;align-items:center}
+.sub + .shot,.sub + .steps,.sub + .rows{margin-top:clamp(14px,2.4vh,30px)}
+kbd{font-family:ui-monospace,Consolas,monospace;background:var(--white);border:1px solid var(--line);
+  border-bottom-width:3px;border-radius:7px;padding:1px 9px;font-size:.82em;white-space:nowrap;
+  font-weight:700;color:var(--ink)}
+code{font-family:ui-monospace,Consolas,"D2Coding",monospace;background:#E9E9F3;
+  border-radius:5px;padding:1px 7px;font-size:.88em;color:var(--ink)}
+.punch code{background:#2E3356;color:var(--white)}
+.path{font-family:ui-monospace,Consolas,"D2Coding",monospace;font-weight:700;color:var(--accent-dim)}
+.warn{color:#D93025!important}
+/* 두 칸 표 — 설정 정리, 오류 → 해결 */
+.rows{display:grid;grid-template-columns:auto 1fr;border-top:1px solid var(--line);width:100%}
+.rows > div{border-bottom:1px solid var(--line);padding:clamp(10px,1.8vh,24px) clamp(10px,1.2vw,22px) clamp(10px,1.8vh,24px) 0;
+  font-size:clamp(15px,1.85vw,32px);line-height:1.38;word-break:keep-all;overflow-wrap:break-word}
+.rows > div:nth-child(odd){font-weight:700;padding-right:clamp(18px,2.4vw,44px);max-width:46vw}
+.rows .k{font-family:ui-monospace,Consolas,"D2Coding",monospace;font-weight:700;color:var(--accent-dim)}
+.rows.err > div:nth-child(odd){font-family:ui-monospace,Consolas,"D2Coding",monospace;
+  color:#C5221F;font-size:clamp(13px,1.5vw,26px)}
+.rows.err > div:nth-child(even){color:var(--ink)}
+.rows.small > div{padding-top:clamp(7px,1.2vh,16px);padding-bottom:clamp(7px,1.2vh,16px);
+  font-size:clamp(14px,1.6vw,28px)}
+.rows.small.err > div:nth-child(odd){font-size:clamp(12px,1.35vw,23px)}
+/* 번호 열쇠 — IDE 화면 여덟 군데 */
+.keys .key b.no{background:var(--accent);color:#fff;border-radius:50%;flex:0 0 auto;
+  width:clamp(28px,2.4vw,42px);height:clamp(28px,2.4vw,42px);display:flex;align-items:center;
+  justify-content:center;font-size:clamp(14px,1.4vw,24px);font-variant-numeric:tabular-nums}
+.key span b{font-weight:700}
+.key span small{display:block;color:var(--muted);font-size:.8em;margin-top:2px}
+/* 표지 단계 칩 12개 */
+.twelve{display:flex;gap:clamp(4px,.45vw,8px);margin:0 0 clamp(16px,2.6vh,34px);flex-wrap:wrap}
+.twelve span{width:clamp(24px,2.5vw,44px);height:clamp(7px,.85vh,13px);border-radius:2px;background:#2E3356}
+.twelve span.g1{background:var(--spark)}
+.twelve span.g2{background:#FF9F43}
+.twelve span.g3{background:var(--accent)}
+.legend{display:flex;gap:clamp(14px,1.8vw,32px);flex-wrap:wrap;font-size:clamp(13px,1.4vw,22px);color:var(--dim);margin:0 0 clamp(18px,3vh,40px)}
+.legend i{display:inline-block;width:.9em;height:.9em;border-radius:2px;margin-right:.4em;vertical-align:-.1em}
+/* 단계 바로 가기 */
+.bar select{font-family:inherit;font-size:14px;border:1px solid var(--line);border-radius:7px;
+  padding:6px 8px;background:#fff;color:var(--ink);max-width:42vw}
+.step .ic.ok{background:var(--accent)}
+@media (max-width:600px){ .rows{grid-template-columns:1fr} .rows > div:nth-child(odd){border-bottom:0;padding-bottom:0;max-width:none} .twocol.wide{grid-template-columns:1fr} }
+
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+  <div class="stage">
+<section class="slide cover" data-step="0"><div class="course">메이커 동아리 · 스터디패드 만들기</div><div class="twelve"><span class="g1"></span><span class="g1"></span><span class="g1"></span><span class="g1"></span><span class="g2"></span><span class="g2"></span><span class="g2"></span><span class="g2"></span><span class="g2"></span><span class="g3"></span><span class="g3"></span><span class="g3"></span></div><div class="legend"><span><i style="background:#FFD400"></i>1~4 프로그램 준비</span><span><i style="background:#FF9F43"></i>5~9 설치 · 연결 · 설정</span><span><i style="background:#C8430E"></i>10~12 올리고 켜기</span></div><p class="ses"><span class="num">12</span><span class="of">단계</span></p><h1>스터디패드를 보드에 올리기</h1><p>아두이노 IDE 설치부터 업로드, 첫 화면까지 함께 따라 해요</p></section>
+<section class="slide " data-step="0"><div class="mark"><span class="n">·</span><span>시작하기</span></div><h2>오늘 흐름 · 약 50분</h2><div class="tl"><div class="tlrow"><span class="t">00~08분</span><span class="d">1~4단계 · 준비물, IDE 설치, 한국어, 화면 구경</span><span class="track"><i class="len" style="width:16%"></i></span></div><div class="tlrow"><span class="t">08~23분</span><span class="d">5~6단계 · ESP32 보드와 LovyanGFX 설치</span><span class="track"><i class="len" style="width:30%"></i></span></div><div class="tlrow"><span class="t">23~33분</span><span class="d">7~9단계 · 코드 열기, 보드 연결, 도구 설정</span><span class="track"><i class="len" style="width:20%"></i></span></div><div class="tlrow"><span class="t">33~45분</span><span class="d">10~11단계 · 확인 → 업로드</span><span class="track"><i class="len" style="width:24%"></i></span></div><div class="tlrow"><span class="t">45~50분</span><span class="d">12단계 · 터치 보정, 완성!</span><span class="track"><i class="len" style="width:10%"></i></span></div></div><p class="note">ESP32 설치(5단계)가 가장 오래 걸려요. 내려받는 동안 다음 장을 함께 봐요.</p></section>
+<section class="slide " data-step="0"><div class="mark"><span class="n">·</span><span>시작하기</span></div><h2>낱말 네 개만 먼저</h2><ul class="pts"><li><b>아두이노 IDE</b> — 코드를 쓰고 보드에 보내는 프로그램</li><li><b>스케치</b> — 아두이노의 코드 파일. 확장자는 <code>.ino</code></li><li><b>컴파일</b> — 사람이 쓴 코드를 보드가 알아듣는 기계어로 바꾸기</li><li><b>업로드</b> — 바꾼 기계어를 USB 케이블로 보드에 보내 저장하기</li></ul></section>
+<section class="slide " data-step="1"><div class="mark"><span class="n">1</span><span>준비물 확인</span></div><h2>책상 위에 세 가지</h2><div class="steps"><div class="step"><div class="ic">📟</div><b>2.8인치 ESP32 터치 보드</b><span>뒤쪽에 <b>BOOT · RESET</b> 버튼이 있어요</span></div><div class="step"><div class="ic">🔌</div><b>USB-C 케이블</b><span><b>데이터가 되는</b> 케이블이어야 해요</span></div><div class="step"><div class="ic">💻</div><b>윈도우 노트북</b><span>인터넷 연결 · 설치 권한</span></div></div><p class="note">휴대폰 충전기에 딸려 온 짧은 케이블 중에는 <b>충전만 되는 것</b>이 있어요. 업로드가 안 되면 케이블부터 바꿔 봐요.<br>학교 컴퓨터에서 설치 비밀번호를 물으면 선생님을 불러요.</p></section>
+<section class="slide " data-step="2"><div class="mark"><span class="n">2</span><span>아두이노 IDE 설치</span></div><h2>아두이노 IDE 내려받기</h2><p class="sub">주소창에 <span class="path">arduino.cc/en/software</span> → <b>Windows Win 10 and newer, 64 bits</b> → <b>JUST DOWNLOAD</b> (돈을 내지 않아도 돼요)</p><figure class="shot"><img src="shots/ide_download.png" alt="아두이노 IDE 내려받기 화면"></figure></section>
+<section class="slide  snug" data-step="2"><div class="mark"><span class="n">2</span><span>아두이노 IDE 설치</span></div><h2>설치 창은 이렇게</h2><p class="sub"><b>I Agree</b> → <b>Next</b> → <b>Install</b> → <b>Finish</b>. 드라이버를 묻는 창에는 꼭 <b>설치</b>를 눌러요.</p><figure class="shot"><img src="shots/ide_install.png" alt="설치 창 순서"></figure><p class="note"><b>설치 안 함</b>을 누르면 나중에 보드를 못 찾을 수 있어요. 처음 실행 때 알림이 여러 개 뜨면 다 사라질 때까지 1~2분 기다려요.</p></section>
+<section class="slide " data-step="3"><div class="mark"><span class="n">3</span><span>메뉴를 한국어로</span></div><h2>메뉴를 한국어로</h2><p class="sub"><b>File</b> → <b>Preferences...</b> <kbd>Ctrl</kbd>+<kbd>,</kbd> → <b>Language: 한국어</b> → <b>OK</b></p><figure class="shot"><img src="shots/ide_language.png" alt="언어 설정 창"></figure></section>
+<section class="slide tall" data-step="4"><div class="mark"><span class="n">4</span><span>IDE 화면 구경</span></div><h2>자주 누를 여덟 군데</h2><figure class="shot"><img src="shots/ide_tour.png" alt="아두이노 IDE 화면 여덟 군데"></figure></section>
+<section class="slide " data-step="4"><div class="mark"><span class="n">4</span><span>IDE 화면 구경</span></div><h2>번호마다 하는 일</h2><div class="keys"><div class="key"><b class="no">1</b><span><b>메뉴</b><small>파일 열기 · 도구 설정</small></span></div><div class="key"><b class="no">2</b><span><b>✓ 확인</b><small>컴파일만 해 보기</small></span></div><div class="key"><b class="no">3</b><span><b>→ 업로드</b><small>컴파일 + 보드에 보내기</small></span></div><div class="key"><b class="no">4</b><span><b>보드 선택</b><small>지금 고른 보드 이름</small></span></div><div class="key"><b class="no">5</b><span><b>보드 매니저</b><small>보드 종류 설치 → 5단계</small></span></div><div class="key"><b class="no">6</b><span><b>라이브러리 매니저</b><small>코드 꾸러미 설치 → 6단계</small></span></div><div class="key"><b class="no">7</b><span><b>탭</b><small>스케치 속 파일들</small></span></div><div class="key"><b class="no">8</b><span><b>출력 창</b><small>결과 · 빨간 글자는 오류</small></span></div></div></section>
+<section class="slide punch" data-step="5"><div class="mark"><span class="n">5</span><span>보드 매니저로 ESP32 설치</span></div><p class="lead">노트북 한 대에 처음 한 번만</p><p class="big">보드 + 라이브러리</p><p class="sub"><b>보드 매니저</b>로 ESP32를, <b>라이브러리 매니저</b>로 LovyanGFX를 설치해요.<br>다음 시간부터는 건너뛰어요.</p></section>
+<section class="slide  snug" data-step="5"><div class="mark"><span class="n">5</span><span>보드 매니저로 ESP32 설치</span></div><h2>보드 매니저에서 esp32 설치</h2><p class="sub">왼쪽 두 번째 아이콘 <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>B</kbd> → <b>esp32</b> 검색 → <b>esp32 by Espressif Systems</b>의 <b>설치</b></p><figure class="shot"><img src="shots/ide_boards.png" alt="보드 매니저 화면"></figure><p class="note">위에 있는 <b>Arduino ESP32 Boards</b>가 아니에요! 내려받는 데 5~15분 걸려요.</p></section>
+<section class="slide " data-step="5"><div class="mark"><span class="n">5</span><span>보드 매니저로 ESP32 설치</span></div><h2>이렇게 바뀌면 끝</h2><div class="twocol wide"><ul class="pts"><li>이름 아래 <b>3.x.x 설치됨</b></li><li>버튼이 <b>제거</b>로 바뀜</li><li>숫자는 그림과 달라도 괜찮아요</li></ul><figure class="shot"><img src="shots/ide_boards_done.png" alt="설치가 끝난 보드 매니저"></figure></div><p class="note"><b>목록에 esp32가 없으면</b> 파일 → 기본 설정 → 추가 보드 관리자 URL에<br><code>https://espressif.github.io/arduino-esp32/package_esp32_index.json</code> 을 붙여 넣고 다시 검색해요.</p></section>
+<section class="slide  snug" data-step="6"><div class="mark"><span class="n">6</span><span>라이브러리 매니저로 LovyanGFX 설치</span></div><h2>라이브러리 매니저에서 LovyanGFX</h2><p class="sub">왼쪽 세 번째 아이콘(책) <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>I</kbd> → <b>LovyanGFX</b> 검색 → <b>설치</b></p><figure class="shot"><img src="shots/ide_library.png" alt="라이브러리 매니저 화면"></figure><p class="note"><b>LovyanGFX by lovyan03</b> — 화면에 글자와 그림을 그리는 라이브러리 <b>딱 하나</b>만 써요. 1분이면 끝나요.</p></section>
+<section class="slide " data-step="7"><div class="mark"><span class="n">7</span><span>코드 내려받고 열기</span></div><h2>코드 내려받고 압축 풀기</h2><p class="sub">사이트 7단계의 <b>StudyPad.zip 내려받기</b> → 마우스 오른쪽 → <b>모두 압축 풀기...</b> → <b>StudyPad</b> 폴더 안의 <b>StudyPad</b> 폴더로</p><figure class="shot"><img src="shots/zip_extract.png" alt="압축 풀기"></figure></section>
+<section class="slide " data-step="7"><div class="mark"><span class="n">7</span><span>코드 내려받고 열기</span></div><h2>StudyPad.ino 더블클릭</h2><p class="sub">위쪽에 탭이 <b>18개</b> 보이면 성공이에요.</p><figure class="shot"><img src="shots/ide_open.png" alt="스케치가 열린 IDE"></figure></section>
+<section class="slide " data-step="7"><div class="mark"><span class="n">7</span><span>코드 내려받고 열기</span></div><h2>코드 폴더의 세 가지 약속</h2><ul class="pts"><li><b>압축을 꼭 풀고</b> 열어요 — zip 안에서 열면 저장·업로드가 안 돼요</li><li><b>폴더 이름 = .ino 이름</b> — 바꾸려면 둘 다 똑같이</li><li>새 버전은 <b>옛 폴더를 지우고</b> 풀어요 — 덮어쓰면 옛 파일이 남아 오류</li></ul></section>
+<section class="slide " data-step="8"><div class="mark"><span class="n">8</span><span>보드 연결 · 포트 확인</span></div><h2>USB-C 케이블로 연결</h2><p class="sub">컴퓨터는 보드를 <b>COM5</b>처럼 <b>COM + 숫자</b>(포트)로 알아봐요. 숫자는 노트북마다 달라요.</p><figure class="shot"><img src="shots/usb_connect.png" alt="노트북과 보드 연결"></figure></section>
+<section class="slide " data-step="8"><div class="mark"><span class="n">8</span><span>보드 연결 · 포트 확인</span></div><h2>내 보드의 COM 번호 찾기</h2><div class="twocol wide"><ul class="pts"><li>시작 버튼 <b>오른쪽 클릭</b> → <b>장치 관리자</b></li><li><b>포트(COM &amp; LPT)</b> 펼치기</li><li>케이블을 뺐다 꽂으면 <b>사라졌다 나타나는 것</b>이 내 보드</li></ul><figure class="shot"><img src="shots/device_manager.png" alt="장치 관리자"></figure></div><p class="note">포트 칸이 없거나 노란 느낌표가 보이면 → <b>다른 케이블</b>로 바꿔 봐요. 그래도 안 되면 CH340 드라이버를 선생님께 부탁해요.</p></section>
+<section class="slide " data-step="9"><div class="mark"><span class="n">9</span><span>도구 메뉴 세 가지 설정</span></div><h2>도구 메뉴에서 세 가지</h2><p class="sub">IDE에게 <b>어떤 보드에, 어떤 크기로, 어느 포트로</b> 보낼지 알려 줘요. 하나라도 틀리면 업로드가 안 돼요.</p><div class="steps"><div class="step"><div class="ic num">1</div><b>보드</b><span><b>ESP32 Dev Module</b></span></div><div class="step"><div class="ic num">2</div><b>Partition Scheme</b><span><b>Huge APP</b></span></div><div class="step"><div class="ic num">3</div><b>포트</b><span>8단계의 <b>COM 번호</b></span></div></div></section>
+<section class="slide  snug" data-step="9"><div class="mark"><span class="n">9</span><span>도구 메뉴 세 가지 설정</span></div><h2>① 보드: ESP32 Dev Module</h2><p class="sub"><b>도구</b> → <b>보드</b> → <b>esp32</b> → <b>ESP32 Dev Module</b></p><figure class="shot"><img src="shots/ide_board_select.png" alt="보드 고르기"></figure><p class="note">S3, C3 같은 글자가 <b>붙지 않은</b> 것이 맞아요. 우리 보드는 ESP32-S3가 아니에요.</p></section>
+<section class="slide punch" data-step="9"><div class="mark"><span class="n">9</span><span>도구 메뉴 세 가지 설정</span></div><p class="lead">가장 많이 막히는 한 줄</p><p class="big">Huge APP</p><p class="sub">한글 글꼴과 단어 1,664개가 들어 있어 코드가 커요.<br>안 바꾸면 <b>Sketch too big</b> 오류가 나요.</p></section>
+<section class="slide " data-step="9"><div class="mark"><span class="n">9</span><span>도구 메뉴 세 가지 설정</span></div><h2>② Partition Scheme: Huge APP</h2><p class="sub"><b>도구</b> → <b>Partition Scheme</b> → <b>Huge APP (3MB No OTA/1MB SPIFFS)</b></p><figure class="shot"><img src="shots/ide_partition.png" alt="파티션 고르기"></figure></section>
+<section class="slide " data-step="9"><div class="mark"><span class="n">9</span><span>도구 메뉴 세 가지 설정</span></div><h2>③ 포트: 내 COM 번호</h2><p class="sub"><b>도구</b> → <b>포트</b> → 8단계에서 찾은 번호. 앞에 <b>✓</b>가 생기면 골라진 거예요.</p><figure class="shot"><img src="shots/ide_port.png" alt="포트 고르기"></figure></section>
+<section class="slide " data-step="9"><div class="mark"><span class="n">9</span><span>도구 메뉴 세 가지 설정</span></div><h2>도구 메뉴 정리 — 옆 사람과 확인</h2><div class="rows "><div>보드</div><div><span class="k">ESP32 Dev Module</span></div><div>Partition Scheme</div><div><span class="k">Huge APP (3MB No OTA/1MB SPIFFS)</span></div><div>포트</div><div>내 보드의 COM 번호 (예: <span class="k">COM5</span>)</div><div>나머지 항목</div><div>건드리지 않아요 (처음 값 그대로)</div></div><p class="note">IDE를 껐다 켜도 이 설정은 기억돼요.</p></section>
+<section class="slide  snug" data-step="10"><div class="mark"><span class="n">10</span><span>✓ 확인(컴파일)</span></div><h2>✓ 확인 먼저 눌러 보기</h2><p class="sub">왼쪽 위 <b>✓</b> <kbd>Ctrl</kbd>+<kbd>R</kbd> → 처음은 3~10분 → <b>컴파일 완료.</b> 가 뜨면 성공</p><figure class="shot"><img src="shots/ide_verify.png" alt="컴파일 완료 화면"></figure><p class="note">숫자는 그림과 달라도 괜찮아요. <b class="warn">빨간 글자</b>가 없으면 성공이에요.</p></section>
+<section class="slide  snug" data-step="11"><div class="mark"><span class="n">11</span><span>→ 업로드</span></div><h2>→ 업로드</h2><p class="sub">왼쪽 위 <b>→</b> <kbd>Ctrl</kbd>+<kbd>U</kbd> → <b>Connecting....</b> → <b>Writing at ... (100 %)</b> → <b>업로드 완료.</b></p><figure class="shot"><img src="shots/ide_upload.png" alt="업로드 완료 화면"></figure><p class="note">업로드 중에는 <b>케이블을 건드리지 않아요.</b> 끝나면 보드가 저절로 다시 켜져요.</p></section>
+<section class="slide " data-step="11"><div class="mark"><span class="n">11</span><span>→ 업로드</span></div><h2>Connecting...... 에서 점만 찍히면</h2><div class="steps"><div class="step"><div class="ic num">1</div><b>→ 업로드 누르기</b><span>출력 창에 <b>Connecting</b>이 나올 때까지</span></div><div class="step"><div class="ic num">2</div><b>BOOT 꾹 누르기</b><span>보드 뒷면의 <b>BOOT</b> 버튼</span></div><div class="step"><div class="ic num">3</div><b>Writing at 나오면 떼기</b><span>숫자가 올라가기 시작하면 손을 떼요</span></div></div><p class="note">그래도 안 되면 <b>도구 → 포트</b> 번호를 다시 확인하고, 시리얼 모니터가 열려 있으면 닫아요.</p></section>
+<section class="slide " data-step="12"><div class="mark"><span class="n">12</span><span>처음 켜기 — 터치 보정</span></div><h2>터치 보정 — 처음 한 번만</h2><p class="sub">빨간 <b>+</b> 가운데를 펜으로 꾹 → 삑 소리가 나면 떼기 → 나머지 <b>+</b>도 똑같이</p><div class="boards" style="margin-top:clamp(14px,2.4vh,30px)"><figure><div class="bframe"><img src="shots/board_calibrate.png" alt="① 빨간 + 를 펜으로 꾹"></div><figcaption>① 빨간 + 를 펜으로 꾹</figcaption></figure><figure><div class="bframe"><img src="shots/board_splash.png" alt="② 시작 화면"></div><figcaption>② 시작 화면</figcaption></figure><figure><div class="bframe"><img src="shots/board_home.png" alt="③ 홈 화면 — 완성!"></div><figcaption>③ 홈 화면 — 완성!</figcaption></figure></div></section>
+<section class="slide " data-step="12"><div class="mark"><span class="n">12</span><span>처음 켜기 — 터치 보정</span></div><h2>터치가 어긋나면 다시 보정</h2><ul class="pts"><li><b>설정</b> 앱 → <b>터치 보정</b> → <b>시작</b></li><li>또는 <b>스터디패드 시작 화면이 보이는 동안</b> BOOT 누르기</li><li>BOOT를 누른 <b>채로</b> 전원을 켜면 업로드 대기 상태 — 화면이 안 나와요</li></ul></section>
+<section class="slide " data-step="13"><div class="mark"><span class="n">🆘</span><span>안 될 때</span></div><h2>빨간 글자가 나오면</h2><p class="sub">위에서부터 <b>처음 나온 error 줄</b>이 가장 중요해요. 그 줄의 낱말로 다음 장 표를 찾아요.</p><figure class="shot"><img src="shots/ide_error.png" alt="오류가 난 출력 창"></figure></section>
+<section class="slide " data-step="13"><div class="mark"><span class="n">🆘</span><span>안 될 때</span></div><h2>컴파일할 때 나는 오류</h2><div class="rows err"><div>Sketch too big</div><div>Partition Scheme → <b>Huge APP</b> 고르기 (9-②)</div><div>LovyanGFX.hpp: No such file</div><div>라이브러리 매니저에서 <b>LovyanGFX</b> 설치 (6단계)</div><div>'○○' was not declared</div><div>옛 폴더를 지우고 <b>새로 압축 풀기</b>. 그래도 같으면 폴더와 .ino 이름을 둘 다 StudyPad2로</div><div>ESP_EXT1_WAKEUP_ANY_LOW</div><div>보드를 <b>ESP32 Dev Module</b>로 다시 고르기 (9-①)</div></div></section>
+<section class="slide " data-step="13"><div class="mark"><span class="n">🆘</span><span>안 될 때</span></div><h2>연결 · 업로드 오류</h2><div class="rows err"><div>포트 목록이 비어 있음</div><div>① 다른 케이블 ② 다른 USB 단자 ③ 장치 관리자 확인 (8단계)</div><div>Failed to connect / Connecting......</div><div>포트 번호 확인 → Connecting 때 <b>BOOT 꾹</b> → Writing에서 떼기</div><div>A fatal error occurred</div><div>도구 → <b>Upload Speed: 115200</b>으로 낮춰 다시 업로드</div></div></section>
+<section class="slide " data-step="13"><div class="mark"><span class="n">🆘</span><span>안 될 때</span></div><h2>올린 뒤에 이상할 때</h2><div class="rows err small"><div>화면이 하얗거나 그대로</div><div><b>RESET</b> 버튼 한 번. 그래도면 보드 이름(E32R28T) 확인</div><div>색이 반대로 보여요</div><div>설정 → <b>색 반전</b>. 빨강·파랑이 바뀌면 hw.h의 <code>LCD_RGB_ORDER</code>를 true로</div><div>누른 곳과 다른 곳이 눌려요</div><div><b>터치 보정</b> 다시 — 펜으로 + 정가운데 (12단계)</div><div>소리가 안 나요</div><div>스피커 단자 연결, 설정 → <b>소리 크기</b> 확인</div><div>화면이 꺼졌어요</div><div>고장 아님, <b>자동 절전</b>. 화면이나 BOOT를 누르면 깨어나요</div><div>"배터리가 부족해요"</div><div>기록은 저장돼 있어요. 충전한 뒤 <b>BOOT</b></div></div></section>
+<section class="slide punch" data-step="0"><div class="mark"><span class="n">·</span><span>마무리</span></div><p class="lead">다음 시간부터는</p><p class="big">7 → 9 → 11</p><p class="sub"><b>코드 열기 → 도구 설정 확인 → 업로드</b>만 하면 돼요.<br>보드 매니저·라이브러리 설치는 다시 안 해요.</p></section>
+  </div>
+  <div class="rail"><i id="fill"></i></div>
+  <div class="bar">
+    <button id="prev">← 이전</button>
+    <button id="next">다음 →</button>
+    <span class="count"><b id="cur">1</b> / 34</span>
+    <select id="jump" aria-label="단계 바로 가기"><option value="0">시작하기</option><option value="3">1. 준비물 확인</option><option value="4">2. 아두이노 IDE 설치</option><option value="6">3. 메뉴를 한국어로</option><option value="7">4. IDE 화면 구경</option><option value="9">5. 보드 매니저로 ESP32 설치</option><option value="12">6. 라이브러리 매니저로 LovyanGFX 설치</option><option value="13">7. 코드 내려받고 열기</option><option value="16">8. 보드 연결 · 포트 확인</option><option value="18">9. 도구 메뉴 세 가지 설정</option><option value="24">10. ✓ 확인(컴파일)</option><option value="25">11. → 업로드</option><option value="27">12. 처음 켜기 — 터치 보정</option><option value="29">안 될 때</option></select>
+    <span class="sp"></span>
+    <a href="index.html">🏠 홈</a>
+    <a href="setup.html">📖 글로 된 가이드</a>
+    <a href="apps.html">📱 앱 사용법</a>
+  </div>
+</div>
+<script>
+var slides = document.querySelectorAll('.slide');
+var deck = document.getElementById('deck');
+var i = 0;
+function show(n){
+  i = Math.max(0, Math.min(slides.length - 1, n));
+  slides.forEach(function(s, k){ s.classList.toggle('on', k === i); });
+  document.getElementById('cur').textContent = (i + 1);
+  document.getElementById('fill').style.width = ((i + 1) / slides.length * 100) + '%';
+  document.getElementById('prev').disabled = (i === 0);
+  document.getElementById('next').disabled = (i === slides.length - 1);
+  try {
+    if (location.hash !== '#' + (i + 1)) history.replaceState(null, '', '#' + (i + 1));
+  } catch (e) { /* 미리보기 창이나 일부 환경에서는 주소를 바꿀 수 없음 — 넘어감 */ }
+  slides[i].scrollTop = 0;
+}
+document.addEventListener('keydown', function(e){
+  if (e.target && e.target.tagName === 'SELECT') return;
+  if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); show(i + 1); }
+  if (e.key === 'ArrowLeft'  || e.key === 'PageUp')  { e.preventDefault(); show(i - 1); }
+  if (e.key === 'Home') show(0);
+  if (e.key === 'End')  show(slides.length - 1);
+});
+document.getElementById('prev').addEventListener('click', function(){ show(i - 1); });
+document.getElementById('next').addEventListener('click', function(){ show(i + 1); });
+
+/* 발표 중에는 조작부를 감춘다. 마우스를 움직이면 2.5초 동안 나타난다. */
+var hideT = null;
+function peek(){
+  deck.classList.add('show');
+  clearTimeout(hideT);
+  hideT = setTimeout(function(){ deck.classList.remove('show'); }, 2500);
+}
+['mousemove','touchstart'].forEach(function(ev){
+  document.addEventListener(ev, peek, {passive:true});
+});
+document.querySelector('.bar').addEventListener('mouseenter', function(){
+  deck.classList.add('show'); clearTimeout(hideT);
+});
+document.addEventListener('focusin', function(e){
+  if (e.target.closest && e.target.closest('.bar')) { deck.classList.add('show'); clearTimeout(hideT); }
+});
+
+var t0 = null;
+document.querySelector('.stage').addEventListener('touchstart', function(e){ t0 = e.changedTouches[0].clientX; }, {passive:true});
+document.querySelector('.stage').addEventListener('touchend', function(e){
+  if (t0 === null) return;
+  var d = e.changedTouches[0].clientX - t0;
+  if (Math.abs(d) > 60) show(d < 0 ? i + 1 : i - 1);
+  t0 = null;
+}, {passive:true});
+function fromHash(){
+  var n = 0;
+  try { n = (parseInt((location.hash || '#1').slice(1), 10) - 1) || 0; } catch (e) { n = 0; }
+  return n;
+}
+addEventListener('hashchange', function(){
+  var n = fromHash();
+  if (n !== i) show(n);
+});
+
+var jump = document.getElementById('jump');
+jump.addEventListener('change', function(){ show(parseInt(jump.value, 10)); jump.blur(); });
+var _show = show;
+show = function(n){
+  _show(n);
+  var st = slides[i].getAttribute('data-step'), best = 0;
+  for (var k = 0; k < jump.options.length; k++) {
+    if (parseInt(jump.options[k].value, 10) <= i) best = k;
+  }
+  jump.selectedIndex = best;
+};
+show(fromHash());
+peek();
+
+</script>
+</body>
+</html>
