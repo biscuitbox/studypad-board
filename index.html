@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#171A2E">
+<title>스터디패드 만들기</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav><div class="in">
+  <a class="on" href="index.html">🏠 홈</a>
+  <a href="setup.html">🛠️ 설치·업로드 가이드</a>
+  <a href="apps.html">📱 앱 사용법</a>
+  <a href="mods.html">✏️ 코드 고쳐 보기</a>
+</div></nav>
+
+<header class="hero"><div class="in">
+  <div>
+    <h1>내 손으로 만드는<br>공부 단말기, 스터디패드</h1>
+    <p class="say">손바닥만 한 터치 보드에 코드를 올리면<br><b>지뢰찾기 · 영어 단어 · 상식 퀴즈</b>가 들어간<br>나만의 기기가 됩니다.</p>
+    <div class="badges">
+      <span>메이커 동아리</span><span>아두이노 IDE</span><span>ESP32 2.8인치 터치 보드</span><span>1인 1보드</span><span>코딩 처음이어도 OK</span>
+    </div>
+    <div class="linkbox">
+      <span class="cap">📦 스터디패드 코드</span>
+      <a class="dl" href="downloads/StudyPad.zip">StudyPad.zip 내려받기 <small>약 85KB</small></a>
+      <span class="how">내려받은 뒤에는 <b>설치·업로드 가이드</b>를 1번부터 순서대로 따라 하세요.</span>
+    </div>
+  </div>
+  <figure style="margin:0">
+    <div class="screen">
+      <div class="chrome"><i></i><i></i><i></i><span>StudyPad · 2.8인치 터치 보드</span></div>
+      <div class="demo">
+        <div class="board"><img id="demoImg" src="shots/board_home.png" alt="스터디패드 홈 화면" width="240" height="320"></div>
+        <div class="chips" role="group" aria-label="화면 바꿔 보기">
+          <button type="button" data-img="board_home.png" aria-pressed="true">홈</button>
+          <button type="button" data-img="board_mine_play.png" aria-pressed="false">💣 지뢰찾기</button>
+          <button type="button" data-img="board_daily.png" aria-pressed="false">🔤 하루 10단어</button>
+          <button type="button" data-img="board_quiz_q.png" aria-pressed="false">❓ 상식 퀴즈</button>
+          <button type="button" data-img="board_paint.png" aria-pressed="false">🎨 그림판</button>
+        </div>
+      </div>
+    </div>
+    <figcaption>실제 코드로 그린 보드 화면이에요 — 눌러 보세요</figcaption>
+  </figure>
+</div></header>
+
+<main>
+  <section>
+    <h2>어디로 갈까요</h2>
+    <p class="lede">처음이라면 왼쪽부터 차례대로 보면 돼요.</p>
+    <div class="pages">
+      <a href="setup.html"><div class="screen"><div class="chrome"><i></i><i></i><i></i><span>setup.html</span></div>
+        <div class="pad"><span class="em">🛠️</span><b>설치·업로드 가이드</b><p>아두이노 IDE 설치부터 보드 매니저, 라이브러리 매니저, 업로드까지 그림으로 한 단계씩.</p></div></div></a>
+      <a href="apps.html"><div class="screen"><div class="chrome"><i></i><i></i><i></i><span>apps.html</span></div>
+        <div class="pad"><span class="em">📱</span><b>앱 사용법</b><p>지뢰찾기, 하루 10단어, 상식 퀴즈, 그림판, 타이머… 10가지 앱을 쓰는 방법.</p></div></div></a>
+      <a href="mods.html"><div class="screen"><div class="chrome"><i></i><i></i><i></i><span>mods.html</span></div>
+        <div class="pad"><span class="em">✏️</span><b>코드 고쳐 보기</b><p>단어 넣기, 퀴즈 만들기, 효과음 바꾸기. 숫자와 글자만 바꿔서 내 기기로 만들어요.</p></div></div></a>
+      <a href="setup.html#trouble"><div class="screen"><div class="chrome"><i></i><i></i><i></i><span>setup.html#trouble</span></div>
+        <div class="pad"><span class="em">🆘</span><b>안 될 때</b><p>빨간 오류 글자가 나왔거나, 포트가 안 보이거나, 화면이 이상할 때 여기부터.</p></div></div></a>
+    </div>
+  </section>
+
+  <section>
+    <h2>만드는 순서</h2>
+    <p class="lede">처음 한 번은 설치에 시간이 걸려요. 그다음부터는 고치고 올리기만 반복하면 돼요.</p>
+    <div class="flow">
+      <a href="setup.html#s1"><span class="sn">1</span><b>준비물 확인</b><span>보드, 데이터 케이블, 노트북</span></a>
+      <a href="setup.html#s2"><span class="sn">2</span><b>프로그램 설치</b><span>아두이노 IDE · ESP32 · LovyanGFX</span></a>
+      <a href="setup.html#s7"><span class="sn">3</span><b>코드 올리기</b><span>압축 풀기 → 설정 3가지 → 업로드</span></a>
+      <a href="apps.html"><span class="sn">4</span><b>써 보기</b><span>터치 보정하고 앱 10개 구경</span></a>
+      <a href="mods.html"><span class="sn">5</span><b>고쳐 보기</b><span>내 단어, 내 퀴즈, 내 소리</span></a>
+    </div>
+  </section>
+
+  <section>
+    <h2>들어 있는 앱</h2>
+    <p class="lede">홈 화면 두 쪽에 앱 10개가 있어요. 그림은 실제 코드로 그린 보드 화면이에요.</p>
+    <div class="gallery">
+      <figure><img src="shots/board_mine_play.png" alt="지뢰찾기 게임 화면" loading="lazy"><figcaption><b>💣 지뢰찾기</b>톡 = 열기, 꾹 = 깃발. 난이도 3단계와 최고 기록.</figcaption></figure>
+      <figure><img src="shots/board_daily.png" alt="하루 10단어 화면" loading="lazy"><figcaption><b>🔤 영어 단어</b>중학·고등 필수 단어와 숙어 1,664개. 하루 10단어씩.</figcaption></figure>
+      <figure><img src="shots/board_quiz_q.png" alt="상식 퀴즈 문제 화면" loading="lazy"><figcaption><b>❓ 상식 퀴즈</b>과학·한국사·세계·지리·우리말 등 266문제와 해설.</figcaption></figure>
+      <figure><img src="shots/board_paint.png" alt="그림판 화면" loading="lazy"><figcaption><b>🎨 그림판</b>7가지 색, 굵기, 지우개, 되돌리기. 3장 저장.</figcaption></figure>
+      <figure><img src="shots/board_memo.png" alt="손글씨 메모 화면" loading="lazy"><figcaption><b>📝 손글씨 메모</b>펜으로 쓰는 메모장. 5쪽 자동 저장.</figcaption></figure>
+      <figure><img src="shots/board_timer.png" alt="공부 타이머 화면" loading="lazy"><figcaption><b>⏱️ 공부 타이머</b>25분 공부 + 5분 휴식, 스톱워치.</figcaption></figure>
+      <figure><img src="shots/board_calc.png" alt="계산기 화면" loading="lazy"><figcaption><b>🧮 계산기</b>밀도 = 질량 ÷ 부피 같은 과학 계산.</figcaption></figure>
+      <figure><img src="shots/board_pick.png" alt="번호 뽑기 화면" loading="lazy"><figcaption><b>🎲 주사위·뽑기</b>주사위, 중복 없는 번호 뽑기, 동전.</figcaption></figure>
+      <figure><img src="shots/board_settings.png" alt="설정 화면" loading="lazy"><figcaption><b>⚙️ 설정</b>밝기, 소리, 자동 절전, 터치 보정.</figcaption></figure>
+      <figure><img src="shots/board_react.png" alt="반응 속도 게임 화면" loading="lazy"><figcaption><b>⚡ 반응 속도</b>새 앱을 만들 때 따라 해 보는 예제.</figcaption></figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>준비물</h2>
+    <p class="lede">한 사람당 아래 준비물이 필요해요.</p>
+    <div class="tbl"><table>
+      <thead><tr><th>준비물</th><th>설명</th></tr></thead>
+      <tbody>
+        <tr><td>2.8인치 ESP32 터치 보드</td><td>ESP32-32E 칩이 들어 있는 2.8인치 디스플레이 보드(E32R28T). <b>터치가 있는 제품</b>이어야 해요.</td></tr>
+        <tr><td>USB-C 케이블</td><td><b>데이터 전송</b>이 되는 케이블. 충전 전용 케이블은 컴퓨터가 보드를 못 찾아요.</td></tr>
+        <tr><td>노트북</td><td>윈도우 10 또는 11. 인터넷이 되어야 설치할 수 있어요.</td></tr>
+        <tr><td>터치펜</td><td>저항막 터치라서 손가락보다 펜이 훨씬 정확해요.</td></tr>
+        <tr><td>배터리 (선택)</td><td>3.7V 리튬 폴리머, 1.25mm 2핀 커넥터. 없으면 USB 전원으로 써요.</td></tr>
+        <tr><td>스피커 (선택)</td><td>1.25mm 2핀 소형 스피커. 있어야 효과음이 나요.</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>동아리 시간 약속</h2>
+    <ul class="rules">
+      <li>화면은 <b>터치펜</b>으로 눌러요. 손톱이나 볼펜으로 긁으면 화면이 상해요.</li>
+      <li>배터리를 꽂기 전에 <b>+와 −</b> 방향을 선생님께 확인받아요. 거꾸로 꽂으면 보드가 고장 나요.</li>
+      <li>코드를 고치기 전에 <b>원래 폴더를 복사</b>해 두어요. 망가지면 언제든 처음으로 돌아갈 수 있어요.</li>
+      <li>빨간 오류 글자가 나오면 당황하지 말고 <b>맨 처음 나온 error 줄</b>을 읽어요. <a href="setup.html#trouble">안 될 때</a>에 대부분 답이 있어요.</li>
+      <li>보드에 <b>이름 스티커</b>를 붙여서 친구 보드와 섞이지 않게 해요.</li>
+    </ul>
+  </section>
+</main>
+
+<footer>
+  메이커 동아리 · 스터디패드 만들기 · 2026<br>
+  <span class="url">보드: 2.8inch ESP32-32E Display (E32R28T) · 아두이노 IDE 2 · LovyanGFX</span>
+</footer>
+
+<script>
+  (function () {
+    var img = document.getElementById('demoImg');
+    var btns = document.querySelectorAll('.chips button');
+    btns.forEach(function (b) {
+      b.addEventListener('click', function () {
+        img.src = 'shots/' + b.dataset.img;
+        btns.forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      });
+    });
+  })();
+</script>
+</body>
+</html>

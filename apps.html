@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#171A2E">
+<title>앱 사용법 · 스터디패드</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav><div class="in">
+  <a href="index.html">🏠 홈</a>
+  <a href="setup.html">🛠️ 설치·업로드 가이드</a>
+  <a class="on" href="apps.html">📱 앱 사용법</a>
+  <a href="mods.html">✏️ 코드 고쳐 보기</a>
+</div></nav>
+
+<main class="doc">
+  <h1>앱 사용법</h1>
+  <p class="lead">홈 화면에서 앱을 톡 누르면 열리고, 어느 앱에서든 <b>왼쪽 위 ◀</b>를 누르면 홈으로 돌아와요. 홈 화면은 두 쪽이에요. 위쪽 <b>1/2 ▶</b>를 누르거나 옆으로 밀면 다음 쪽이 나와요.</p>
+  <div class="jump">
+    <a href="#touch">터치 요령</a><a href="#mine">💣 지뢰찾기</a><a href="#words">🔤 영어 단어</a><a href="#quiz">❓ 상식 퀴즈</a><a href="#paint">🎨 그림판·메모</a>
+    <a href="#timer">⏱️ 타이머</a><a href="#calc">🧮 계산기</a><a href="#random">🎲 주사위·뽑기</a><a href="#settings">⚙️ 설정</a><a href="#react">⚡ 반응 속도</a><a href="#power">🔋 절전·배터리</a>
+  </div>
+
+  <h2 id="touch">터치 요령</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>동작</th><th>하는 법</th><th>쓰는 곳</th></tr></thead>
+    <tbody>
+      <tr><td>톡</td><td>펜으로 짧게 눌렀다 떼기</td><td>버튼, 지뢰찾기 칸 열기</td></tr>
+      <tr><td>꾹</td><td>0.5초쯤 누르고 있기</td><td>지뢰찾기 깃발, 번호 뽑기 5씩 바꾸기</td></tr>
+      <tr><td>밀기</td><td>누른 채 옆으로 움직이기</td><td>홈 화면 쪽 넘기기, 그림 그리기</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note"><p>이 보드는 <b>눌러야 반응하는 저항막 터치</b>예요. 스마트폰처럼 살짝 스치면 잘 안 돼요. 터치펜으로 또박또박 눌러요.</p></div>
+
+  <h2 id="apps-list">앱 하나씩 보기</h2>
+
+  <div class="app" id="mine">
+    <div class="pics"><img src="shots/board_mine_play.png" alt="지뢰찾기 게임 중" loading="lazy"><img src="shots/board_mine_levels.png" alt="지뢰찾기 난이도 고르기" loading="lazy"></div>
+    <div><h3>💣 지뢰찾기</h3><p class="one">숫자를 보고 지뢰가 없는 칸을 모두 열면 이겨요.</p>
+      <ul>
+        <li>난이도: <b>쉬움</b> 10×12칸 지뢰 14개 · <b>보통</b> 지뢰 22개 · <b>어려움</b> 12×14칸 지뢰 35개</li>
+        <li><b>톡</b> = 칸 열기, <b>꾹</b> = 깃발 꽂기/빼기</li>
+        <li>오른쪽 위 <b>깃발 버튼</b>을 켜면 톡 = 깃발로 바뀌어요.</li>
+        <li>열린 숫자 칸을 톡 하면, 주변 깃발 수가 숫자와 같을 때 나머지 칸이 한 번에 열려요.</li>
+        <li>첫 칸은 항상 안전해요. 가운데 <b>얼굴</b>을 누르면 새 게임.</li>
+        <li>난이도마다 가장 빨리 깬 시간이 저장돼요.</li>
+      </ul></div>
+  </div>
+
+  <div class="app" id="words">
+    <div class="pics"><img src="shots/board_words.png" alt="영어 단어 첫 화면" loading="lazy"><img src="shots/board_daily.png" alt="하루 10단어" loading="lazy"></div>
+    <div><h3>🔤 영어 단어</h3><p class="one">중학 필수 845개 · 고등 필수 588개 · 숙어 231개, 모두 1,664개가 들어 있어요.</p>
+      <ul>
+        <li>위쪽 탭에서 <b>전체 / 중학 / 고등 / 숙어</b> 중 단어장을 골라요.</li>
+        <li><b>하루 10단어</b>: <b>1. 익히기</b>로 카드 10장을 외운 뒤 <b>2. 테스트</b>에서 10문제 중 <b>8개 이상</b> 맞히면 다음 일차가 열려요.</li>
+        <li><b>복습 테스트</b>: 통과한 일차의 단어 중 틀렸던 것부터 다시 물어봐요.</li>
+        <li><b>카드 학습</b>: 카드를 톡 하면 뜻이 보여요. '몰라요'를 누르면 오답 노트로 가요.</li>
+        <li><b>뜻 맞히기</b>: 4개 중 뜻 고르기 10문제.</li>
+        <li><b>철자 쓰기</b>: 뜻을 보고 화면 키보드로 영어를 써요. '힌트'는 다음 글자 하나를 알려 줘요.</li>
+        <li><b>오답 노트</b>: 틀린 단어만 모아 카드나 퀴즈로 다시 공부해요. 맞히면 빠져요.</li>
+        <li>진도와 오답 노트는 답할 때마다 저장돼서 전원이 꺼져도 남아요.</li>
+      </ul></div>
+  </div>
+
+  <div class="app" id="words-flow" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr))">
+    <figure class="shot board" style="margin:0"><img src="shots/board_learn.png" alt="1일차 익히기 카드" loading="lazy"><figcaption>1. 익히기 — 카드를 톡 하면 뜻</figcaption></figure>
+    <figure class="shot board" style="margin:0"><img src="shots/board_test.png" alt="1일차 테스트 문제" loading="lazy"><figcaption>2. 테스트 — 뜻 고르기</figcaption></figure>
+    <figure class="shot board" style="margin:0"><img src="shots/board_test_answer.png" alt="정답 표시" loading="lazy"><figcaption>정답은 초록, 고른 오답은 빨강</figcaption></figure>
+  </div>
+
+  <div class="app" id="quiz">
+    <div class="pics"><img src="shots/board_quiz.png" alt="상식 퀴즈 분야 고르기" loading="lazy"><img src="shots/board_quiz_ex.png" alt="퀴즈 해설" loading="lazy"></div>
+    <div><h3>❓ 상식 퀴즈</h3><p class="one">6개 분야 266문제. 한 번에 10문제를 무작위로 내요.</p>
+      <ul>
+        <li>분야: <b>과학</b> 68 · <b>한국사</b> 46 · <b>세계·지리</b> 45 · <b>우리말</b> 48 · <b>생활·사회</b> 27 · <b>예술·체육</b> 32</li>
+        <li><b>전체 섞어서 풀기</b>를 고르면 위쪽 막대에 지금 문제의 분야가 나와요.</li>
+        <li>답을 고르면 정답과 <b>해설</b>이 나와요. 다 읽고 <b>다음 ▶</b>.</li>
+        <li>분야마다 최고 점수가 저장돼요.</li>
+      </ul></div>
+  </div>
+
+  <div class="app" id="paint">
+    <div class="pics"><img src="shots/board_paint.png" alt="그림판" loading="lazy"><img src="shots/board_memo.png" alt="손글씨 메모" loading="lazy"></div>
+    <div><h3>🎨 그림판 · 📝 손글씨 메모</h3><p class="one">펜으로 그리고 쓰는 앱. 둘 다 자동으로 저장돼요.</p>
+      <ul>
+        <li>아래 도구 막대: <b>색</b> 고르기, <b>● 굵기</b>(누를 때마다 3단계), <b>지우개</b>, <b>↶ 되돌리기</b>(한 번)</li>
+        <li>위쪽 <b>&lt; &gt;</b>로 다른 장으로 넘겨요. 그림판 3장, 메모 5쪽.</li>
+        <li><b>새로</b>를 누르면 지금 장만 지워요. 실수로 지웠으면 되돌리기!</li>
+        <li>3초 동안 안 그리면 자동 저장돼요. 전원을 꺼도 남아 있어요.</li>
+      </ul></div>
+  </div>
+
+  <div class="app" id="timer">
+    <div class="pics"><img src="shots/board_timer.png" alt="공부 타이머" loading="lazy"><img src="shots/board_stopwatch.png" alt="스톱워치" loading="lazy"></div>
+    <div><h3>⏱️ 공부 타이머</h3><p class="one">집중 시간과 쉬는 시간을 번갈아 재는 뽀모도로 타이머예요.</p>
+      <ul>
+        <li><b>25/5</b>, <b>50/10</b>, <b>15/3</b> 버튼으로 집중/휴식 시간을 골라요. 멈춰 있을 때 <b>− +</b>로 1분씩 바꿀 수도 있어요.</li>
+        <li>집중이 끝나면 알람과 초록 LED, 쉬는 시간이 끝나면 빨간 LED가 깜빡여요. 끝낸 횟수만큼 🍅가 쌓여요.</li>
+        <li><b>스톱워치</b> 탭: 시작/멈춤, '기록'으로 구간 시간을 5개까지 남겨요.</li>
+        <li>타이머가 돌아가는 동안에는 자동 절전이 되지 않아요. 앱을 나가면 타이머가 멈춰요.</li>
+      </ul></div>
+  </div>
+
+  <div class="app" id="calc">
+    <div class="pics"><img src="shots/board_calc.png" alt="계산기" loading="lazy"></div>
+    <div><h3>🧮 계산기</h3><p class="one">사칙연산, %, 부호 바꾸기(+/−).</p>
+      <ul>
+        <li>과학 시간 계산에 써 봐요: 밀도 = 질량 ÷ 부피, 속력 = 거리 ÷ 시간</li>
+        <li>위쪽 작은 글씨에 방금 한 계산식이 보여요. 0으로 나누면 '오류'가 나와요.</li>
+        <li><b>C</b> = 모두 지우기, <b>←</b> = 한 글자 지우기</li>
+      </ul></div>
+  </div>
+
+  <div class="app" id="random">
+    <div class="pics"><img src="shots/board_dice.png" alt="주사위" loading="lazy"><img src="shots/board_pick.png" alt="번호 뽑기" loading="lazy"></div>
+    <div><h3>🎲 주사위 · 번호 뽑기 · 동전</h3><p class="one">모둠 활동과 발표 순서 정하기에 좋아요.</p>
+      <ul>
+        <li><b>주사위</b>: 1개 또는 2개(합계도 보여 줘요)</li>
+        <li><b>번호 뽑기</b>: 1부터 N번까지(2~100). <b>− +</b>를 꾹 누르면 5씩 바뀌어요.</li>
+        <li><b>중복 없이 뽑기</b>를 켜면 한 번 나온 번호는 다시 안 나와요. 최근 뽑은 번호 8개가 아래에 보여요.</li>
+        <li><b>동전</b>: 앞/뒤</li>
+      </ul></div>
+  </div>
+
+  <div class="app" id="settings">
+    <div class="pics"><img src="shots/board_settings.png" alt="설정" loading="lazy"></div>
+    <div><h3>⚙️ 설정</h3><p class="one">바꾼 설정은 바로 저장돼요.</p>
+      <ul>
+        <li><b>화면 밝기</b> 5단계, <b>소리 크기</b> 0~3(0 = 소리 끔)</li>
+        <li><b>색 반전</b>: 색이 필름처럼 반대로 보일 때 켜요.</li>
+        <li><b>화면 뒤집기</b>: 보드를 거꾸로 세워 쓸 때 켜요. 터치도 같이 뒤집혀요.</li>
+        <li><b>자동 절전</b>: 끄기 / 1분 / 3분 / 5분 / 10분</li>
+        <li><b>터치 보정</b>: 누른 곳과 다른 곳이 눌릴 때</li>
+        <li><b>기록 지우기</b>: 점수, 오답 노트, 단어 진도를 모두 지워요. 그림과 메모는 남아요. 보드를 다른 친구에게 넘겨줄 때 써요.</li>
+        <li>맨 아래에 배터리 전압이 보여요.</li>
+      </ul></div>
+  </div>
+
+  <div class="app" id="react">
+    <div class="pics"><img src="shots/board_react.png" alt="반응 속도" loading="lazy"></div>
+    <div><h3>⚡ 반응 속도 (홈 2쪽)</h3><p class="one">화면이 초록색으로 바뀌는 순간 최대한 빨리 눌러요.</p>
+      <ul>
+        <li>빨간 화면에서 미리 누르면 "너무 빨라요!"</li>
+        <li>가장 빠른 기록(ms, 1000분의 1초)이 저장돼요.</li>
+        <li>이 앱은 <b>새 앱 만들기 예제</b>예요. 코드가 짧고 설명이 많아서 읽어 보기 좋아요. → <a href="mods.html#m5">코드 고쳐 보기</a></li>
+      </ul></div>
+  </div>
+
+  <h2 id="power">🔋 절전과 배터리</h2>
+  <ul class="rules">
+    <li>아무것도 안 누르면 정해진 시간(처음 값 3분)이 지나기 15초 전에 화면이 어두워지고, 시간이 되면 <b>절전</b>해요.</li>
+    <li>화면이나 <b>BOOT 버튼</b>을 누르면 하던 화면 그대로 깨어나요. 깨우려고 누른 건 버튼으로 치지 않아요.</li>
+    <li>배터리가 거의 없으면 기록을 저장하고 <b>빨간 LED</b>가 깜빡여요. 설정 화면에 '충전 필요!'가 떠요.</li>
+    <li>더 낮아지면 "배터리가 부족해요" 화면을 띄우고 스스로 꺼져요. 충전한 뒤 <b>BOOT 버튼</b>을 누르면 다시 켜져요.</li>
+    <li>오래 쓰지 않을 때는 배터리 커넥터를 빼 두면 배터리가 오래가요.</li>
+  </ul>
+</main>
+
+<footer>
+  메이커 동아리 · 스터디패드 만들기 · 앱 사용법<br>
+  <span class="url">화면 그림은 실제 스터디패드 코드로 그린 것이에요.</span>
+</footer>
+</body>
+</html>

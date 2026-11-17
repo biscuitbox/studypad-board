@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#171A2E">
+<title>설치·업로드 가이드 · 스터디패드</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav><div class="in">
+  <a href="index.html">🏠 홈</a>
+  <a class="on" href="setup.html">🛠️ 설치·업로드 가이드</a>
+  <a href="apps.html">📱 앱 사용법</a>
+  <a href="mods.html">✏️ 코드 고쳐 보기</a>
+</div></nav>
+
+<main class="doc">
+  <h1>설치·업로드 가이드</h1>
+  <p class="lead">아두이노를 처음 써 보는 친구를 위한 안내서예요. <b>1번부터 순서대로</b> 따라 하면 보드에 스터디패드가 올라가요. 처음 한 번은 40~60분쯤 걸려요. 한 단계를 끝낼 때마다 제목 오른쪽의 <b>다 했어요</b>에 체크하세요.</p>
+
+  <div class="progress" aria-live="polite"><span>진행</span><div class="bar"><i id="bar"></i></div><b id="count">0 / 12</b></div>
+  <div class="jump" id="jump">
+    <a href="#s1">1 준비물</a><a href="#s2">2 IDE 설치</a><a href="#s3">3 한국어</a><a href="#s4">4 화면 구경</a>
+    <a href="#s5">5 보드 매니저</a><a href="#s6">6 라이브러리 매니저</a><a href="#s7">7 코드 열기</a><a href="#s8">8 보드 연결</a>
+    <a href="#s9">9 도구 설정</a><a href="#s10">10 확인</a><a href="#s11">11 업로드</a><a href="#s12">12 처음 켜기</a>
+    <a href="#trouble">🆘 안 될 때</a>
+  </div>
+
+  <div class="note">
+    <p><b>낱말 먼저 알고 가요</b></p>
+    <ul>
+      <li><b>아두이노 IDE</b>: 코드를 쓰고 보드에 보내는 프로그램이에요. 글 쓰는 한글 프로그램처럼 코드 쓰는 프로그램이라고 생각하면 돼요.</li>
+      <li><b>스케치</b>: 아두이노에서는 코드 파일을 '스케치'라고 불러요. 확장자는 <code>.ino</code>예요.</li>
+      <li><b>컴파일</b>: 사람이 쓴 코드를 보드가 알아듣는 기계어로 바꾸는 일이에요.</li>
+      <li><b>업로드</b>: 바꾼 기계어를 USB 케이블로 보드에 보내 저장하는 일이에요.</li>
+    </ul>
+  </div>
+
+  <!-- 1 -->
+  <h2 id="s1"><span class="no">1</span>준비물 확인<label class="done"><input type="checkbox" data-step="s1"> 다 했어요</label></h2>
+  <p>책상 위에 아래 세 가지가 있는지 확인해요.</p>
+  <ol class="do">
+    <li><b>2.8인치 ESP32 터치 보드</b> — 화면 뒤쪽에 작은 칩과 버튼(BOOT, RESET)이 있는 보드예요.</li>
+    <li><b>USB-C 케이블</b> — 반드시 <b>데이터 전송이 되는 케이블</b>이어야 해요. 휴대폰 충전기에 딸려 온 짧은 케이블 중에는 충전만 되는 것이 있어요.</li>
+    <li><b>윈도우 노트북</b> — 인터넷에 연결되어 있어야 해요.</li>
+  </ol>
+  <div class="warn"><p><b>학교 컴퓨터라면</b></p><p>프로그램 설치에 관리자 권한이 필요할 수 있어요. 설치 창에서 비밀번호를 물어보면 선생님을 불러요.</p></div>
+
+  <!-- 2 -->
+  <h2 id="s2"><span class="no">2</span>아두이노 IDE 설치하기<label class="done"><input type="checkbox" data-step="s2"> 다 했어요</label></h2>
+  <p>이미 노트북에 <b>Arduino IDE 2</b>가 깔려 있으면 이 단계는 건너뛰어요. 바탕 화면이나 시작 메뉴에 청록색 아이콘이 있는지 찾아보세요.</p>
+  <ol class="do">
+    <li>인터넷 주소창에 <code>arduino.cc/en/software</code>를 입력해 들어가요.</li>
+    <li><b>Arduino IDE 2.x</b> 부분의 <span class="ui">Windows Win 10 and newer, 64 bits</span>를 눌러요. (그림 ①)</li>
+    <li>후원 안내 화면이 나오면 <span class="ui">JUST DOWNLOAD</span>를 눌러요. 돈을 내지 않아도 돼요. (그림 ②)</li>
+    <li>다운로드 폴더에 생긴 <code>arduino-ide_2.x.x_Windows_64bit.exe</code>를 더블클릭해요.</li>
+  </ol>
+  <figure class="shot"><img src="shots/ide_download.png" alt="아두이노 공식 사이트 다운로드 화면 그림" loading="lazy">
+    <figcaption>그림은 이해를 돕기 위해 단순하게 그렸어요. 실제 사이트 모습은 조금 다를 수 있어요.</figcaption></figure>
+  <ol class="do" start="5" style="counter-reset: d 4">
+    <li>설치 창에서 <span class="ui">I Agree</span>(동의) → 설치 대상은 그대로 두고 <span class="ui">Next</span> → 설치 위치도 그대로 두고 <span class="ui">Install</span>을 눌러요.</li>
+    <li>중간에 <b>"이 장치 소프트웨어를 설치하시겠습니까?"</b> 창이 나오면 <span class="ui">설치</span>를 눌러요. 여러 번 나올 수 있어요. 이건 USB로 보드와 이야기하기 위한 드라이버예요.</li>
+    <li><span class="ui">Finish</span>를 누르면 아두이노 IDE가 처음으로 열려요.</li>
+  </ol>
+  <figure class="shot"><img src="shots/ide_install.png" alt="설치 창 세 개: I Agree, Install, 드라이버 설치" loading="lazy">
+    <figcaption>③ 드라이버 창에서 <b>설치 안 함</b>을 누르면 나중에 보드를 못 찾을 수 있어요.</figcaption></figure>
+  <div class="note"><p><b>처음 열 때 기다리기</b></p><p>처음 실행하면 IDE가 필요한 정보를 내려받느라 오른쪽 아래에 알림이 여러 개 떠요. <b>Windows 보안 경고</b> 창이 나오면 <span class="ui">액세스 허용</span>을 눌러요. 알림이 다 사라질 때까지 1~2분 기다려요.</p></div>
+
+  <!-- 3 -->
+  <h2 id="s3"><span class="no">3</span>메뉴를 한국어로 바꾸기<label class="done"><input type="checkbox" data-step="s3"> 다 했어요</label></h2>
+  <p>처음에는 메뉴가 영어로 나와요. 한국어로 바꾸면 이 가이드의 그림과 똑같아져요. 이미 한국어라면 건너뛰어요.</p>
+  <ol class="do">
+    <li>맨 위 메뉴에서 <span class="ui">File</span>을 눌러요.</li>
+    <li><span class="ui">Preferences...</span>를 눌러요. (단축키 <span class="key">Ctrl</span> + <span class="key">,</span>)</li>
+    <li><b>Language</b> 옆 상자를 눌러 <span class="ui">한국어</span>를 골라요.</li>
+    <li><span class="ui">OK</span>를 누르면 IDE가 다시 열리면서 메뉴가 한국어로 바뀌어요.</li>
+  </ol>
+  <figure class="shot"><img src="shots/ide_language.png" alt="File → Preferences → Language 한국어 → OK" loading="lazy">
+    <figcaption>번호 순서대로 눌러요: File → Preferences... → Language: 한국어 → OK</figcaption></figure>
+
+  <!-- 4 -->
+  <h2 id="s4"><span class="no">4</span>IDE 화면 구경하기<label class="done"><input type="checkbox" data-step="s4"> 다 했어요</label></h2>
+  <p>앞으로 자주 누를 곳 여덟 군데예요. 그림의 번호와 아래 표를 맞춰 보세요.</p>
+  <figure class="shot"><img src="shots/ide_tour.png" alt="아두이노 IDE 화면 각 부분에 번호를 붙인 그림" loading="lazy"></figure>
+  <div class="tbl"><table>
+    <thead><tr><th>번호</th><th>이름</th><th>하는 일</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>메뉴</td><td><b>파일</b>(열기·저장), <b>도구</b>(보드·포트 설정)를 자주 써요.</td></tr>
+      <tr><td>2</td><td>✓ 확인</td><td>코드에 틀린 곳이 없는지 컴파일만 해 봐요. 보드가 없어도 돼요.</td></tr>
+      <tr><td>3</td><td>→ 업로드</td><td>컴파일한 다음 보드에 보내요. 보드가 연결되어 있어야 해요.</td></tr>
+      <tr><td>4</td><td>보드 선택</td><td>지금 고른 보드 이름이 보여요.</td></tr>
+      <tr><td>5</td><td>보드 매니저</td><td>보드 종류(ESP32)를 IDE에 설치하는 곳이에요. → <a href="#s5">5단계</a></td></tr>
+      <tr><td>6</td><td>라이브러리 매니저</td><td>다른 사람이 만들어 둔 코드 꾸러미(라이브러리)를 설치하는 곳이에요. → <a href="#s6">6단계</a></td></tr>
+      <tr><td>7</td><td>탭</td><td>스케치에 들어 있는 파일들이에요. 눌러서 파일을 바꿔 봐요.</td></tr>
+      <tr><td>8</td><td>출력 창</td><td>컴파일·업로드 결과가 나와요. <b>빨간 글자</b>가 나오면 오류예요.</td></tr>
+    </tbody>
+  </table></div>
+
+  <!-- 5 -->
+  <h2 id="s5"><span class="no">5</span>보드 매니저로 ESP32 설치하기<label class="done"><input type="checkbox" data-step="s5"> 다 했어요</label></h2>
+  <p>아두이노 IDE는 처음에 <b>아두이노 우노 같은 보드만</b> 알고 있어요. 우리 보드의 두뇌인 <b>ESP32</b>를 쓰려면 ESP32용 꾸러미를 한 번 설치해야 해요. 이 일을 하는 곳이 <b>보드 매니저</b>예요.</p>
+  <ol class="do">
+    <li>왼쪽 세로줄에서 <b>두 번째 아이콘</b>(보드 모양)을 눌러 <b>보드매니저</b>를 열어요. (단축키 <span class="key">Ctrl</span> + <span class="key">Shift</span> + <span class="key">B</span>)</li>
+    <li>검색 칸에 <code>esp32</code>를 입력해요.</li>
+    <li>목록에서 <b>esp32 by Espressif Systems</b>를 찾아 <span class="ui">설치</span>를 눌러요. 위에 있는 <b>Arduino ESP32 Boards</b>가 아니에요!</li>
+  </ol>
+  <figure class="shot"><img src="shots/ide_boards.png" alt="보드매니저에서 esp32 검색 후 esp32 by Espressif Systems 설치" loading="lazy">
+    <figcaption>③을 누르면 아래 출력 창에 내려받는 과정이 보여요. 인터넷 속도에 따라 <b>5~15분</b> 걸려요. 그동안 다음 단계 설명을 읽어 두세요.</figcaption></figure>
+  <div class="duo">
+    <figure class="shot"><img src="shots/ide_boards_done.png" alt="esp32 설치됨 표시" loading="lazy">
+      <figcaption>이름 아래에 <b>"3.x.x 설치됨"</b>이 보이고 버튼이 <b>제거</b>로 바뀌면 끝이에요. 숫자는 달라도 돼요.</figcaption></figure>
+    <div class="warn" style="margin:0">
+      <p><b>esp32가 목록에 안 보이면</b></p>
+      <p><span class="ui">파일</span> → <span class="ui">기본 설정</span>을 열고, <b>추가 보드 관리자 URL</b> 칸에 아래 주소를 붙여 넣은 뒤 확인을 눌러요. 그다음 다시 검색해요.</p>
+      <p><code>https://espressif.github.io/arduino-esp32/package_esp32_index.json</code></p>
+      <p><b>설치가 중간에 멈추면</b> IDE를 껐다 켜고 다시 설치를 눌러요.</p>
+    </div>
+  </div>
+
+  <!-- 6 -->
+  <h2 id="s6"><span class="no">6</span>라이브러리 매니저로 LovyanGFX 설치하기<label class="done"><input type="checkbox" data-step="s6"> 다 했어요</label></h2>
+  <p><b>라이브러리</b>는 다른 사람이 미리 만들어 둔 코드 꾸러미예요. 스터디패드는 화면에 글자와 그림을 그리기 위해 <b>LovyanGFX</b>라는 라이브러리 <b>딱 하나</b>만 써요.</p>
+  <ol class="do">
+    <li>왼쪽 세로줄에서 <b>세 번째 아이콘</b>(책 모양)을 눌러 <b>라이브러리 매니저</b>를 열어요. (단축키 <span class="key">Ctrl</span> + <span class="key">Shift</span> + <span class="key">I</span>)</li>
+    <li>검색 칸에 <code>LovyanGFX</code>를 입력해요. 대문자·소문자는 상관없어요.</li>
+    <li><b>LovyanGFX by lovyan03</b>의 <span class="ui">설치</span>를 눌러요. 1분이면 끝나요.</li>
+  </ol>
+  <figure class="shot"><img src="shots/ide_library.png" alt="라이브러리 매니저에서 LovyanGFX 검색 후 설치" loading="lazy">
+    <figcaption>출력 창에 <b>"LovyanGFX@1.x.x 설치됨"</b>이 나오면 끝이에요.</figcaption></figure>
+  <div class="good"><p><b>여기까지가 '처음 한 번만' 하는 설치예요.</b></p><p>보드 매니저(ESP32)와 라이브러리 매니저(LovyanGFX)는 노트북 한 대에 한 번만 설치하면 돼요. 다음 시간부터는 7단계부터 하면 돼요.</p></div>
+
+  <!-- 7 -->
+  <h2 id="s7"><span class="no">7</span>스터디패드 코드 내려받고 열기<label class="done"><input type="checkbox" data-step="s7"> 다 했어요</label></h2>
+  <ol class="do">
+    <li><a href="downloads/StudyPad.zip">StudyPad.zip 내려받기</a>를 눌러요. 다운로드 폴더에 <code>StudyPad.zip</code>이 생겨요.</li>
+    <li>파일 탐색기에서 <code>StudyPad.zip</code>을 마우스 <b>오른쪽</b> 버튼으로 누르고 <span class="ui">모두 압축 풀기...</span> → <span class="ui">압축 풀기</span>를 눌러요.</li>
+    <li>새로 생긴 <b>StudyPad</b> 폴더 안에 또 <b>StudyPad</b> 폴더가 있어요. 그 안으로 들어가요.</li>
+    <li><code>StudyPad.ino</code>를 더블클릭해요. 아두이노 IDE에서 스케치가 열려요.</li>
+  </ol>
+  <figure class="shot"><img src="shots/zip_extract.png" alt="압축 파일을 마우스 오른쪽으로 눌러 모두 압축 풀기, 폴더 안의 StudyPad.ino" loading="lazy">
+    <figcaption>윈도우에서 확장자(.ino)가 안 보이면 탐색기 <b>보기 → 표시 → 파일 확장명</b>을 켜요. 청록색 아이콘이 아두이노 스케치예요.</figcaption></figure>
+  <figure class="shot"><img src="shots/ide_open.png" alt="StudyPad 스케치가 여러 탭으로 열린 아두이노 IDE" loading="lazy">
+    <figcaption>위쪽에 <code>StudyPad.ino</code>, <code>app_calc.cpp</code> 같은 탭이 여러 개 보이면 성공이에요. 탭은 모두 18개예요.</figcaption></figure>
+  <div class="warn">
+    <p><b>세 가지를 꼭 지켜요</b></p>
+    <ul>
+      <li><b>압축을 풀지 않고</b> zip 안에서 바로 .ino를 열면 안 돼요. 저장도 업로드도 되지 않아요.</li>
+      <li><b>폴더 이름을 바꾸지 마세요.</b> 폴더 이름(StudyPad)과 .ino 이름(StudyPad.ino)이 같아야 열려요. 이름을 바꾸고 싶으면 둘 다 똑같이 바꿔요.</li>
+      <li>새 버전을 받았을 때 <b>예전 폴더 위에 덮어쓰지 마세요.</b> 예전 폴더를 지우거나 다른 곳으로 옮긴 뒤 새로 풀어요. 지워진 옛날 파일이 남아 오류가 나요.</li>
+    </ul>
+  </div>
+
+  <!-- 8 -->
+  <h2 id="s8"><span class="no">8</span>보드 연결하고 포트 확인하기<label class="done"><input type="checkbox" data-step="s8"> 다 했어요</label></h2>
+  <ol class="do">
+    <li>USB-C 케이블로 <b>보드</b>와 <b>노트북</b>을 연결해요. 보드 화면에 불이 들어와요. (처음 보드는 아무 그림이나 나올 수 있어요.)</li>
+    <li>컴퓨터는 보드를 <b>COM5</b>처럼 <b>COM + 숫자</b>라는 이름(포트)으로 알아봐요. 숫자는 노트북마다 달라요.</li>
+  </ol>
+  <figure class="shot"><img src="shots/usb_connect.png" alt="노트북과 보드를 USB-C 케이블로 연결한 그림" loading="lazy">
+    <figcaption>① 노트북의 USB 단자 ② 보드의 USB-C 단자. 보드의 단자 위치는 그림과 다를 수 있어요.</figcaption></figure>
+  <h3>내 보드의 포트 번호 알아내기</h3>
+  <p>윈도우 <b>시작 버튼</b>을 마우스 오른쪽으로 누르고 <span class="ui">장치 관리자</span>를 열어요. <b>포트(COM &amp; LPT)</b>를 펼치면 보드가 보여요. 케이블을 뺐다 꽂으면 사라졌다 나타나는 것이 내 보드예요.</p>
+  <figure class="shot small"><img src="shots/device_manager.png" alt="장치 관리자 포트 목록의 USB-SERIAL CH340 (COM5)" loading="lazy">
+    <figcaption>이름은 보드에 따라 조금 다를 수 있어요. 괄호 안 <b>COM 번호</b>를 기억해요.</figcaption></figure>
+  <div class="warn">
+    <p><b>포트(COM & LPT)가 없거나 노란 느낌표가 보이면</b></p>
+    <ul>
+      <li>먼저 <b>다른 케이블</b>로 바꿔 봐요. 충전 전용 케이블인 경우가 가장 많아요.</li>
+      <li>그래도 안 되면 USB 칩 드라이버가 없는 거예요. 이 보드는 대부분 <b>CH340</b> 계열 칩을 써요. 선생님께 드라이버 설치를 부탁해요.</li>
+    </ul>
+  </div>
+
+  <!-- 9 -->
+  <h2 id="s9"><span class="no">9</span>도구 메뉴에서 세 가지 설정하기<label class="done"><input type="checkbox" data-step="s9"> 다 했어요</label></h2>
+  <p>IDE에게 "<b>어떤 보드</b>에, <b>어떤 크기로</b>, <b>어느 포트</b>로 보낼지" 알려 주는 단계예요. 하나라도 틀리면 업로드가 안 돼요.</p>
+
+  <h3 id="s9-board">① 보드 고르기: ESP32 Dev Module</h3>
+  <ol class="do">
+    <li>메뉴에서 <span class="ui">도구</span>를 눌러요.</li>
+    <li><span class="ui">보드</span>에 마우스를 올려요.</li>
+    <li><span class="ui">esp32</span>에 마우스를 올리면 아주 긴 목록이 나와요.</li>
+    <li><span class="ui">ESP32 Dev Module</span>을 눌러요.</li>
+  </ol>
+  <figure class="shot"><img src="shots/ide_board_select.png" alt="도구 → 보드 → esp32 → ESP32 Dev Module" loading="lazy">
+    <figcaption>④ 비슷한 이름이 많아요. <b>S3, C3 같은 글자가 붙지 않은</b> "ESP32 Dev Module"이 맞아요. 우리 보드는 ESP32-S3가 아니에요.</figcaption></figure>
+
+  <h3 id="s9-part">② 파티션 고르기: Huge APP</h3>
+  <p>스터디패드에는 한글 글꼴과 단어 1,664개가 들어 있어서 코드가 커요. 보드의 저장 공간을 <b>프로그램 칸이 큰 방식</b>으로 나눠 줘야 들어가요.</p>
+  <ol class="do">
+    <li><span class="ui">도구</span>를 다시 눌러요.</li>
+    <li>아래쪽의 <span class="ui">Partition Scheme</span>에 마우스를 올려요.</li>
+    <li><span class="ui">Huge APP (3MB No OTA/1MB SPIFFS)</span>를 눌러요.</li>
+  </ol>
+  <figure class="shot"><img src="shots/ide_partition.png" alt="도구 → Partition Scheme → Huge APP" loading="lazy">
+    <figcaption>이걸 안 하면 컴파일할 때 <b>Sketch too big</b> 오류가 나요. 항목 순서는 버전에 따라 조금 다를 수 있어요.</figcaption></figure>
+
+  <h3 id="s9-port">③ 포트 고르기: 8단계에서 찾은 COM 번호</h3>
+  <ol class="do">
+    <li><span class="ui">도구</span>를 눌러요.</li>
+    <li><span class="ui">포트</span>에 마우스를 올려요.</li>
+    <li>8단계에서 확인한 <b>COM 번호</b>를 눌러요. 앞에 ✓ 표시가 생기면 골라진 거예요.</li>
+  </ol>
+  <figure class="shot"><img src="shots/ide_port.png" alt="도구 → 포트 → COM5" loading="lazy">
+    <figcaption>포트 목록이 비어 있으면 케이블을 다시 꽂고 <a href="#s8">8단계</a>를 확인해요.</figcaption></figure>
+
+  <div class="good">
+    <p><b>설정 정리 — 도구 메뉴를 열어 이 표와 똑같은지 확인해요</b></p>
+    <div class="tbl"><table style="margin:8px 0 0">
+      <tbody>
+        <tr><th>보드</th><td>ESP32 Dev Module</td></tr>
+        <tr><th>Partition Scheme</th><td>Huge APP (3MB No OTA/1MB SPIFFS)</td></tr>
+        <tr><th>포트</th><td>내 보드의 COM 번호 (예: COM5)</td></tr>
+        <tr><th>나머지 항목</th><td>건드리지 않아요 (처음 값 그대로)</td></tr>
+      </tbody>
+    </table></div>
+    <p style="margin-top:8px">IDE를 껐다 켜도 이 설정은 기억돼요. 다른 보드 예제를 올린 적이 있다면 다시 확인해요.</p>
+  </div>
+
+  <!-- 10 -->
+  <h2 id="s10"><span class="no">10</span>✓ 확인(컴파일) 해 보기<label class="done"><input type="checkbox" data-step="s10"> 다 했어요</label></h2>
+  <p>바로 업로드해도 되지만, 처음에는 <b>확인</b>을 먼저 눌러 코드가 잘 바뀌는지 봐요.</p>
+  <ol class="do">
+    <li>왼쪽 위 <span class="ui">✓</span> (확인) 버튼을 눌러요. (단축키 <span class="key">Ctrl</span> + <span class="key">R</span>)</li>
+    <li>아래 출력 창에 글자가 올라가요. <b>처음 컴파일은 3~10분</b> 걸릴 수 있어요. 노트북이 바빠 보여도 기다려요.</li>
+    <li>오른쪽 아래에 <b>"컴파일 완료."</b>가 뜨고, 출력 창에 <b>"스케치는 프로그램 저장 공간 … 바이트를 사용"</b>이 나오면 성공이에요.</li>
+  </ol>
+  <figure class="shot"><img src="shots/ide_verify.png" alt="확인 버튼을 누른 뒤 컴파일 완료 메시지" loading="lazy">
+    <figcaption>숫자는 그림과 달라도 괜찮아요. <b>빨간 글자가 없으면 성공</b>이에요. 빨간 글자가 나오면 <a href="#trouble">안 될 때</a>를 봐요.</figcaption></figure>
+
+  <!-- 11 -->
+  <h2 id="s11"><span class="no">11</span>→ 업로드하기<label class="done"><input type="checkbox" data-step="s11"> 다 했어요</label></h2>
+  <ol class="do">
+    <li>보드가 USB로 연결되어 있고, <b>도구 → 포트</b>가 맞는지 다시 확인해요.</li>
+    <li>왼쪽 위 <span class="ui">→</span> (업로드) 버튼을 눌러요. (단축키 <span class="key">Ctrl</span> + <span class="key">U</span>)</li>
+    <li>컴파일이 끝나면 출력 창에 <code>Connecting....</code>이 나오고, 이어서 <code>Writing at … (1 %)</code>부터 <code>(100 %)</code>까지 숫자가 올라가요.</li>
+    <li><code>Hard resetting via RTS pin...</code>이 나오고 오른쪽 아래에 <b>"업로드 완료."</b>가 뜨면 끝! 보드가 저절로 다시 켜져요.</li>
+  </ol>
+  <figure class="shot"><img src="shots/ide_upload.png" alt="업로드 버튼을 누른 뒤 Writing 100% 와 업로드 완료" loading="lazy">
+    <figcaption>출력 창 글자는 보드와 버전에 따라 조금 달라요. <b>100 %</b>와 <b>업로드 완료</b>가 보이면 성공이에요.</figcaption></figure>
+  <div class="warn">
+    <p><b>Connecting........ 에서 점만 계속 찍히면</b></p>
+    <p>보드 뒷면의 <b>BOOT 버튼을 꾹 누르고 있다가</b>, <code>Writing at</code>이 나오면 손을 떼요. 보드를 업로드 대기 상태로 만드는 방법이에요.</p>
+  </div>
+  <div class="note"><p><b>업로드 중에는 케이블을 건드리지 마세요.</b> 중간에 빠지면 보드가 이상하게 켜질 수 있어요. 그래도 고장 난 건 아니에요. 다시 업로드하면 돼요.</p></div>
+
+  <!-- 12 -->
+  <h2 id="s12"><span class="no">12</span>처음 켜기 — 터치 보정<label class="done"><input type="checkbox" data-step="s12"> 다 했어요</label></h2>
+  <p>업로드가 끝나면 보드가 다시 켜지면서 <b>터치 보정 화면</b>이 나와요. 화면의 어디를 눌렀는지 보드가 정확히 알게 하는 과정이에요. 처음 한 번만 하면 돼요.</p>
+  <ol class="do">
+    <li>왼쪽 위 빨간 <b>+</b> 가운데를 <b>터치펜으로 꾹</b> 눌러요. 삑 소리가 나면 떼요.</li>
+    <li>이어서 나오는 <b>오른쪽 위</b>, <b>왼쪽 아래</b>의 + 도 똑같이 눌러요.</li>
+    <li>'스터디패드' 시작 화면이 나오고 홈 화면으로 바뀌면 완성이에요! 🎉</li>
+  </ol>
+  <div class="duo">
+    <figure class="shot board"><img src="shots/board_calibrate.png" alt="터치 보정 화면" loading="lazy"><figcaption>① 빨간 + 를 펜으로 꾹</figcaption></figure>
+    <figure class="shot board"><img src="shots/board_splash.png" alt="스터디패드 시작 화면" loading="lazy"><figcaption>② 시작 화면</figcaption></figure>
+    <figure class="shot board"><img src="shots/board_home.png" alt="스터디패드 홈 화면" loading="lazy"><figcaption>③ 홈 화면 — 완성!</figcaption></figure>
+  </div>
+  <div class="note">
+    <p><b>터치가 어긋나서 다시 보정하고 싶을 때</b></p>
+    <ul>
+      <li><span class="ui">설정</span> 앱 → <span class="ui">터치 보정</span> → <span class="ui">시작</span>을 눌러요.</li>
+      <li>또는 보드를 켜고 <b>'스터디패드' 시작 화면이 보이는 동안 BOOT 버튼</b>을 눌러요. (BOOT를 누른 채로 전원을 켜면 업로드 대기 상태가 되어 화면이 안 나와요.)</li>
+    </ul>
+  </div>
+  <div class="good"><p><b>다음 시간부터는</b> 7단계(코드 열기) → 9단계(도구 설정 확인) → 11단계(업로드)만 하면 돼요. 이제 <a href="apps.html">앱 사용법</a>을 보면서 앱을 하나씩 써 봐요.</p></div>
+
+  <!-- 안 될 때 -->
+  <h2 id="trouble"><span class="no">🆘</span>안 될 때</h2>
+  <p>출력 창의 빨간 글자는 <b>위에서부터 처음 나온 error 줄</b>이 가장 중요해요. 그 줄의 낱말을 아래 제목에서 찾아보세요.</p>
+
+  <div class="faq"><h3>Sketch too big / text section exceeds available space <em>컴파일</em></h3>
+    <figure class="shot" style="margin:6px 0 12px"><img src="shots/ide_error.png" alt="Sketch too big 오류" loading="lazy"></figure>
+    <dl><dt>까닭</dt><dd>Partition Scheme을 바꾸지 않았어요.</dd>
+    <dt>해결</dt><dd><b>도구 → Partition Scheme → Huge APP (3MB No OTA/1MB SPIFFS)</b>를 고르고 다시 확인해요. → <a href="#s9-part">9-②</a></dd></dl></div>
+
+  <div class="faq"><h3>LovyanGFX.hpp: No such file or directory <em>컴파일</em></h3>
+    <dl><dt>까닭</dt><dd>LovyanGFX 라이브러리가 설치되지 않았어요.</dd>
+    <dt>해결</dt><dd><b>라이브러리 매니저</b>에서 LovyanGFX를 설치해요. → <a href="#s6">6단계</a></dd></dl></div>
+
+  <div class="faq"><h3>'C_SCI' was not declared / ○○ was not declared <em>컴파일</em></h3>
+    <dl><dt>까닭</dt><dd>새 코드를 예전 폴더 위에 덮어써서 지워진 옛날 파일(app_science.cpp 등)이 남아 있어요. 아두이노는 폴더 안의 .cpp를 전부 컴파일해요.</dd>
+    <dt>해결</dt><dd>IDE를 닫고 예전 StudyPad 폴더를 지운 뒤 새로 압축을 풀어요. 그래도 똑같으면 폴더와 .ino 이름을 <b>StudyPad2</b>처럼 둘 다 바꿔서 열어요. (IDE가 기억하던 옛날 복사본을 안 쓰게 돼요.)</dd></dl></div>
+
+  <div class="faq"><h3>ESP_EXT1_WAKEUP_ANY_LOW was not declared / 이상한 낱말이 잔뜩 <em>컴파일</em></h3>
+    <dl><dt>까닭</dt><dd>보드를 잘못 골랐을 가능성이 커요. (예: ESP32S3 Dev Module)</dd>
+    <dt>해결</dt><dd><b>도구 → 보드 → esp32 → ESP32 Dev Module</b>로 다시 골라요. → <a href="#s9-board">9-①</a></dd></dl></div>
+
+  <div class="faq"><h3>포트 목록이 비어 있어요 / 포트가 회색이에요 <em>연결</em></h3>
+    <dl><dt>까닭</dt><dd>충전 전용 케이블이거나, 케이블이 헐겁거나, USB 드라이버가 없어요.</dd>
+    <dt>해결</dt><dd>① 다른 케이블로 바꿔 꽂기 ② 노트북의 다른 USB 단자에 꽂기 ③ 장치 관리자에서 확인하기 → <a href="#s8">8단계</a></dd></dl></div>
+
+  <div class="faq"><h3>Failed to connect to ESP32 / Connecting...... 에서 멈춤 <em>업로드</em></h3>
+    <dl><dt>까닭</dt><dd>보드가 업로드 대기 상태로 바뀌지 못했거나, 포트를 잘못 골랐어요.</dd>
+    <dt>해결</dt><dd>① <b>도구 → 포트</b> 번호 확인 ② 업로드를 누르고 <b>Connecting</b>이 나올 때 <b>BOOT 버튼을 꾹</b> 누르고 있다가 Writing이 나오면 떼기 ③ 시리얼 모니터가 열려 있으면 닫기</dd></dl></div>
+
+  <div class="faq"><h3>A fatal error occurred: ... / Upload Speed 문제 <em>업로드</em></h3>
+    <dl><dt>까닭</dt><dd>케이블이나 USB 단자가 빠른 속도를 못 따라가요.</dd>
+    <dt>해결</dt><dd><b>도구 → Upload Speed</b>를 <b>115200</b>으로 낮춰서 다시 업로드해요. 느리지만 잘 올라가요.</dd></dl></div>
+
+  <div class="faq"><h3>업로드는 됐는데 화면이 하얗거나 그대로예요 <em>업로드 후</em></h3>
+    <dl><dt>까닭</dt><dd>보드가 아직 다시 켜지지 않았거나, 다른 종류의 보드예요.</dd>
+    <dt>해결</dt><dd>보드의 <b>RESET 버튼</b>을 한 번 눌러요. 그래도 그대로면 보드 이름(E32R28T, 2.8inch ESP32-32E)이 맞는지 선생님께 확인해요.</dd></dl></div>
+
+  <div class="faq"><h3>색이 사진 필름처럼 반대로 보여요 / 빨강과 파랑이 바뀌었어요 <em>화면</em></h3>
+    <dl><dt>해결</dt><dd>색이 반대면 <b>설정 → 색 반전</b>을 눌러요. 빨강·파랑이 바뀌었으면 <code>hw.h</code> 탭의 <code>#define LCD_RGB_ORDER  false</code>를 <code>true</code>로 바꿔서 다시 업로드해요.</dd></dl></div>
+
+  <div class="faq"><h3>누른 곳과 다른 곳이 눌려요 <em>터치</em></h3>
+    <dl><dt>해결</dt><dd>터치 보정을 다시 해요. 손가락 대신 <b>터치펜</b>으로, + 의 <b>정가운데</b>를 꾹 눌러요. → <a href="#s12">12단계</a></dd></dl></div>
+
+  <div class="faq"><h3>소리가 안 나요 <em>소리</em></h3>
+    <dl><dt>해결</dt><dd>스피커가 보드의 스피커 단자에 꽂혀 있는지, <b>설정 → 소리 크기</b>가 0(맨 왼쪽)이 아닌지 확인해요.</dd></dl></div>
+
+  <div class="faq"><h3>화면이 꺼졌어요 <em>절전</em></h3>
+    <dl><dt>해결</dt><dd>고장이 아니라 <b>자동 절전</b>이에요. 화면을 누르거나 BOOT 버튼을 누르면 하던 화면 그대로 깨어나요. 시간은 <b>설정 → 자동 절전</b>에서 바꿔요.</dd></dl></div>
+
+  <div class="faq"><h3>"배터리가 부족해요" 화면이 나오고 꺼졌어요 <em>배터리</em></h3>
+    <dl><dt>해결</dt><dd>기록은 저장되어 있어요. USB 케이블로 충전한 뒤 <b>BOOT 버튼</b>을 누르면 다시 켜져요.</dd></dl></div>
+</main>
+
+<footer>
+  메이커 동아리 · 스터디패드 만들기 · 설치·업로드 가이드<br>
+  <span class="url">그림 속 IDE 화면은 이해를 돕기 위해 다시 그린 것이에요. 실제 화면은 버전에 따라 조금 다를 수 있어요.</span>
+</footer>
+
+<script>
+  (function () {
+    var KEY = 'studypad-setup-done';
+    var done = {};
+    try { done = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { done = {}; }
+    var boxes = document.querySelectorAll('input[data-step]');
+    function paint() {
+      var n = 0;
+      boxes.forEach(function (b) {
+        var id = b.dataset.step, on = !!done[id];
+        b.checked = on;
+        b.closest('h2').classList.toggle('ok', on);
+        var j = document.querySelector('#jump a[href="#' + id + '"]');
+        if (j) j.classList.toggle('ok', on);
+        if (on) n++;
+      });
+      document.getElementById('count').textContent = n + ' / ' + boxes.length;
+      document.getElementById('bar').style.width = (n * 100 / boxes.length) + '%';
+    }
+    boxes.forEach(function (b) {
+      b.addEventListener('change', function () {
+        done[b.dataset.step] = b.checked;
+        try { localStorage.setItem(KEY, JSON.stringify(done)); } catch (e) {}
+        paint();
+      });
+    });
+    paint();
+  })();
+</script>
+</body>
+</html>
