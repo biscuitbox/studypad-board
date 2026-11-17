@@ -4,6 +4,7 @@
 
 - 사이트: https://biscuitbox.github.io/studypad-board/
 - 보드 코드: [downloads/StudyPad.zip](downloads/StudyPad.zip)
+- 케이스(단색 STL): [downloads/StudyPad_case.zip](downloads/StudyPad_case.zip) — 교탁 도우미(ES3C28P) 케이스와 같은 파일
 
 | 페이지 | 내용 |
 | --- | --- |

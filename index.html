@@ -57,6 +57,8 @@
         <div class="pad"><span class="em">📱</span><b>앱 사용법</b><p>지뢰찾기, 하루 10단어, 상식 퀴즈, 그림판, 타이머… 10가지 앱을 쓰는 방법.</p></div></div></a>
       <a href="mods.html"><div class="screen"><div class="chrome"><i></i><i></i><i></i><span>mods.html</span></div>
         <div class="pad"><span class="em">✏️</span><b>코드 고쳐 보기</b><p>단어 넣기, 퀴즈 만들기, 효과음 바꾸기. 숫자와 글자만 바꿔서 내 기기로 만들어요.</p></div></div></a>
+      <a href="#case"><div class="screen"><div class="chrome"><i></i><i></i><i></i><span>#case</span></div>
+        <div class="pad"><span class="em">🧩</span><b>케이스 만들기</b><p>보드·배터리·스피커를 한 몸에 넣는 3D 프린팅 키링 케이스. 단색 STL 파일.</p></div></div></a>
       <a href="setup.html#trouble"><div class="screen"><div class="chrome"><i></i><i></i><i></i><span>setup.html#trouble</span></div>
         <div class="pad"><span class="em">🆘</span><b>안 될 때</b><p>빨간 오류 글자가 나왔거나, 포트가 안 보이거나, 화면이 이상할 때 여기부터.</p></div></div></a>
     </div>
@@ -91,6 +93,26 @@
     </div>
   </section>
 
+  <section id="case">
+    <h2>케이스 만들기 — 3D 프린팅</h2>
+    <p class="lede">보드·배터리·스피커를 한 몸에 넣는 키링형 케이스예요. 교탁 도우미 연수(ES3C28P 보드)에서 쓴 케이스가 이 보드에도 그대로 맞아요. 볼트 4개로 조립하고, 서포트 없이 출력해요.</p>
+    <div class="gallery photo">
+      <figure><img src="shots/case_front.jpg" alt="케이스에 넣은 스터디패드 앞모습" loading="lazy"><figcaption><b>🧩 완성 모습</b>front_bezel.stl · 위쪽에 키링 고리</figcaption></figure>
+      <figure><img src="shots/case_exploded.jpg" alt="케이스 분해도" loading="lazy"><figcaption><b>🔩 들어가는 순서</b>뒷 케이스 → 배터리·스피커 → 보드 → 앞 베젤. 그림 속 화면은 예시예요.</figcaption></figure>
+      <figure><img src="shots/case_back.jpg" alt="케이스 뒷면" loading="lazy"><figcaption><b>🔊 뒷면</b>back_shell.stl · 스피커 그릴 · BOOT 버튼 · RESET 핀홀</figcaption></figure>
+    </div>
+    <div class="pages" style="margin-top:16px">
+      <a href="downloads/StudyPad_case.zip"><div class="screen"><div class="chrome"><i></i><i></i><i></i><span>downloads/StudyPad_case.zip</span></div>
+        <div class="pad"><span class="em">⬇️</span><b>케이스 파일 받기 (단색, 약 1.9MB)</b><p>앞 베젤, 뒷 케이스(스위치 구멍 있는 것·없는 것), BOOT 버튼 플런저 STL과 조립 안내가 들어 있어요.</p></div></div></a>
+    </div>
+    <div class="after">
+      <p><b>출력</b> — 59.6×90.4×22mm · PETG 또는 PLA · 0.2mm · 벽 3줄 · 채움 20% · 파일이 이미 출력 방향이라 돌리지 않고 그대로 · BOOT 플런저는 작으니 2~3개</p>
+      <p><b>준비물</b> — 3.7V 리튬폴리머 배터리(1.25mm 2핀, 바닥 30×35mm·두께 10mm 이하, 예: 603035 600mAh) · 소형 스피커(29×41×11mm 이하) · M3×12 렌치볼트 4개와 2.5mm 육각렌치 · 양면테이프</p>
+      <p><b>조립</b> — ① BOOT 플런저를 뒷 케이스 안쪽에서 끼우기 ② 스피커를 아래 포켓, 배터리를 위 포켓에 양면테이프로 고정 ③ 커넥터를 보드에 꽂고 화면이 위로 오게 기둥 4개 위에 올리기(USB-C가 아래 구멍 쪽) ④ 앞 베젤을 덮고 뒤에서 볼트 4개 체결. 볼트가 기둥에 나사산을 내며 들어가니 천천히, 너무 세게 조이지 않아요.</p>
+      <p>배터리를 꽂기 전에 보드 단자 옆 <b>+ 표시와 빨간 선</b>이 같은 쪽인지 꼭 확인해요.</p>
+    </div>
+  </section>
+
   <section>
     <h2>준비물</h2>
     <p class="lede">한 사람당 아래 준비물이 필요해요.</p>
@@ -103,6 +125,7 @@
         <tr><td>터치펜</td><td>저항막 터치라서 손가락보다 펜이 훨씬 정확해요.</td></tr>
         <tr><td>배터리 (선택)</td><td>3.7V 리튬 폴리머, 1.25mm 2핀 커넥터. 없으면 USB 전원으로 써요.</td></tr>
         <tr><td>스피커 (선택)</td><td>1.25mm 2핀 소형 스피커. 있어야 효과음이 나요.</td></tr>
+        <tr><td>케이스 (선택)</td><td>3D 프린터로 출력한 케이스 + M3×12 렌치볼트 4개. → <a href="#case">케이스 만들기</a></td></tr>
       </tbody>
     </table></div>
   </section>

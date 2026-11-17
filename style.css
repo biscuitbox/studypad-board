@@ -90,6 +90,11 @@ h2 { font-size: 25px; margin: 0 0 6px; letter-spacing: -0.03em; font-weight: 700
 .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 190px), 1fr)); gap: 16px; }
 .gallery figure { margin: 0; background: var(--white); border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
 .gallery img { display: block; width: 100%; max-width: 240px; margin: 0 auto; image-rendering: pixelated; border-radius: 6px; border: 6px solid #0B0D1A; }
+.gallery.photo img { image-rendering: auto; border: 0; max-width: 100%; border-radius: 8px; background: #EEF1F6; }
+.gallery.photo { grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); }
+.after { background: var(--white); border: 1px solid var(--line); border-radius: 10px; padding: 18px 21px; margin-top: 16px; }
+.after p { margin: 0 0 9px; }
+.after p:last-child { margin: 0; }
 .gallery figcaption { margin-top: 8px; font-size: 14px; color: var(--muted); line-height: 1.5; }
 .gallery figcaption b { color: var(--ink); display: block; font-size: 15.5px; }
 
